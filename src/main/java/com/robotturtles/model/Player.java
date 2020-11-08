@@ -5,16 +5,38 @@ import static com.robotturtles.model.Board.*;
 public class Player {
 
     private static final int BOARD_INDEX_ZERO = 0;
+    private static final int CENTRE_INDEX_THREE = 3;
+    private static final int CENTRE_INDEX_FOUR = 4;
+
     private String playerName;
     private int playerId;
     private Deck deck;
     private MovableTile turtle;
+    private BasicTile jewel;
 
     public Player(String playerName, int playerId) {
         this.playerName = playerName;
         this.playerId = playerId;
         this.deck = new Deck();
         initTurtle();
+        initJewel();
+    }
+
+    private void initJewel() {
+        // TODO: Need a method to calculate the Position of Jewel and not hardcode it
+        switch (playerId) {
+            case 0:
+                this.jewel = new Jewel(new Position(CENTRE_INDEX_THREE,CENTRE_INDEX_THREE));
+                break;
+            case 1:
+                this.jewel = new Jewel(new Position(CENTRE_INDEX_THREE,CENTRE_INDEX_FOUR));
+                break;
+            case 2:
+                this.jewel = new Jewel(new Position(CENTRE_INDEX_FOUR,CENTRE_INDEX_FOUR));
+                break;
+            case 3:
+                this.jewel = new Jewel(new Position(CENTRE_INDEX_FOUR,CENTRE_INDEX_THREE));
+        }
     }
 
     private void initTurtle() {
@@ -43,5 +65,9 @@ public class Player {
 
     public Deck getDeck() {
         return this.deck;
+    }
+
+    public BasicTile getJewel() {
+        return this.jewel;
     }
 }

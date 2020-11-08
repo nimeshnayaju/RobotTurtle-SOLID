@@ -18,6 +18,7 @@ public class LeftTurn implements IMove {
                 break;
             case EAST:
                 newDirection = Direction.NORTH;
+                break;
             default:
                 newDirection = null;
         }
