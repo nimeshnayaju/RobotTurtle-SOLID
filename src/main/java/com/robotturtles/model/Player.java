@@ -1,7 +1,10 @@
 package com.robotturtles.model;
 
+import static com.robotturtles.model.Board.*;
+
 public class Player {
 
+    private static final int BOARD_INDEX_ZERO = 0;
     private String playerName;
     private int playerId;
     private Deck deck;
@@ -15,6 +18,30 @@ public class Player {
     }
 
     private void initTurtle() {
+        switch (playerId) {
+            case 0:
+                this.turtle = new Turtle(new Position(BOARD_INDEX_ZERO, BOARD_INDEX_ZERO), Direction.SOUTH);
+                break;
+            case 1:
+                this.turtle = new Turtle(new Position(NUM_OF_COLS-1, BOARD_INDEX_ZERO), Direction.SOUTH);
+                break;
+            case 2:
+                this.turtle = new Turtle(new Position(NUM_OF_ROWS-1, NUM_OF_COLS-1), Direction.NORTH);
+                break;
+            case 3:
+                this.turtle = new Turtle(new Position(NUM_OF_COLS-1, BOARD_INDEX_ZERO), Direction.NORTH);
+        }
+    }
 
+    public MovableTile getTurtle() {
+        return this.turtle;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public Deck getDeck() {
+        return this.deck;
     }
 }

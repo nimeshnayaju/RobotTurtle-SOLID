@@ -9,4 +9,44 @@ public class Board {
     public Board() {
         tiles = new BasicTile[NUM_OF_ROWS][NUM_OF_COLS];
     }
+
+    public void setUpTile(BasicTile tile) {
+        addTileToPosition(tile, tile.getPosition());
+    }
+
+    private void addTileToPosition(BasicTile tile, Position position) {
+        int rowNumber = position.getRowNumber();
+        int colNumber = position.getColNumber();
+        this.tiles[rowNumber][colNumber] = tile;
+    }
+
+    /**
+     * Method to check if the specified position in the Board is occupied or not
+     * @param row row number
+     * @param col column number
+     * @return true if the position is occupied; false otherwise
+     */
+    public boolean isOccupied(int row, int col) {
+        return tiles[row][col] != null;
+    }
+
+    public boolean isOccupied(Position position) {
+        return isOccupied(position.getRowNumber(), position.getColNumber());
+    }
+
+    public void makeMove(Position oldPosition, Position destinationPosition, MovableTile turtle){
+        if(oldPosition.equals(destinationPosition)){
+            return;
+        }
+        setPositionNull(oldPosition);
+        setNewPosition(destinationPosition, turtle);
+    }
+
+    private void setPositionNull(Position position){
+        tiles[position.getRowNumber()][position.getColNumber()] = null;
+    }
+
+    private void setNewPosition(Position position, MovableTile turtle){
+        tiles[position.getRowNumber()][position.getColNumber()] = turtle;
+    }
 }
