@@ -4,3 +4,4 @@ out/
 production/
 .DS_Store
 *.iml
+/bin/
