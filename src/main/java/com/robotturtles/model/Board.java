@@ -33,6 +33,15 @@ public class Board {
     public boolean isOccupied(Position position) {
         return isOccupied(position.getRowNumber(), position.getColNumber());
     }
+    
+    /**
+     * Returns the Tile in the specified position
+     * @param rowNumber row number
+     * @param colNumber column number
+     */
+    public BasicTile getTile(int rowNumber, int colNumber) {
+        return tiles[rowNumber][colNumber];
+    }
 
     public void makeMove(Position oldPosition, Position destinationPosition, MovableTile turtle){
         if(oldPosition.equals(destinationPosition)){

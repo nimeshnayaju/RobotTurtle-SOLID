@@ -23,7 +23,7 @@ public class Player {
                 this.turtle = new Turtle(new Position(BOARD_INDEX_ZERO, BOARD_INDEX_ZERO), Direction.SOUTH);
                 break;
             case 1:
-                this.turtle = new Turtle(new Position(NUM_OF_COLS-1, BOARD_INDEX_ZERO), Direction.SOUTH);
+                this.turtle = new Turtle(new Position(BOARD_INDEX_ZERO, NUM_OF_COLS-1), Direction.SOUTH);
                 break;
             case 2:
                 this.turtle = new Turtle(new Position(NUM_OF_ROWS-1, NUM_OF_COLS-1), Direction.NORTH);

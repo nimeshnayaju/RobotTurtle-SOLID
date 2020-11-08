@@ -45,11 +45,11 @@ public class PromptController {
     static int promptChooseCards(GameDisplay display, Scanner sc, int turn, String playerName, Deck deck) {
         display.displayMessage("Turn: Player " + (turn + 1) + " ("+ playerName + ")\n");
         display.displayMessage("Select a card from the following options: ");
-        display.displayDeck(deck);
+        display.displayDeck(/*deck*/);
         String cardChosenString = sc.nextLine();
         while (!cardChosenString.matches("\\d+")) {
             display.displayMessage("Select a valid card from the following options: ");
-            display.displayDeck(deck);
+            display.displayDeck(/*deck*/);
             cardChosenString = sc.nextLine();
         }
         return Integer.parseInt(cardChosenString);

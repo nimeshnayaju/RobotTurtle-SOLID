@@ -18,6 +18,7 @@ public class RightTurn implements IMove{
                 break;
             case EAST:
                 newDirection = Direction.SOUTH;
+                break;
             default:
                 newDirection = null;
         }
