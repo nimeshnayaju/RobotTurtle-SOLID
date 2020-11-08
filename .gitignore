@@ -1,0 +1,6 @@
+#IntelliJ generated files
+.idea/
+out/
+production/
+.DS_Store
+*.iml
