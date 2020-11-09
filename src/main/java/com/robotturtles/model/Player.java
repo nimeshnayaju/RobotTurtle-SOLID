@@ -5,19 +5,15 @@ import static com.robotturtles.model.Board.*;
 public class Player {
 
     private static final int BOARD_INDEX_ZERO = 0;
-    private static final int CENTRE_INDEX_THREE = 3;
-    private static final int CENTRE_INDEX_FOUR = 4;
 
     private String playerName;
     private int playerId;
-    private Deck deck;
     private MovableTile turtle;
     private BasicTile jewel;
 
     public Player(String playerName, int playerId) {
         this.playerName = playerName;
         this.playerId = playerId;
-        this.deck = new Deck();
         initTurtle();
         initJewel();
     }
@@ -55,10 +51,6 @@ public class Player {
 
     public String getPlayerName() {
         return playerName;
-    }
-
-    public Deck getDeck() {
-        return this.deck;
     }
 
     public BasicTile getJewel() {

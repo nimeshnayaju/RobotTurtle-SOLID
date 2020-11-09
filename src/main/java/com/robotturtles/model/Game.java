@@ -77,14 +77,6 @@ public class Game {
         return getCurrentPlayer().getPlayerName();
     }
 
-    /**
-     * Returns the deck of the current turn
-     * @return Deck object of the current player in turn
-     */
-    public Deck getCurrentPlayerDeck() {
-        return getCurrentPlayer().getDeck();
-    }
-
     private Player getCurrentPlayer() {
         return this.players.get(turn);
     }

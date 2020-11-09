@@ -1,7 +1,5 @@
 package com.robotturtles.controller;
 
-import com.robotturtles.model.Deck;
-import com.robotturtles.model.Game;
 import com.robotturtles.view.GameDisplay;
 
 import java.util.Scanner;
@@ -42,7 +40,7 @@ public class PromptController {
         return playerNames;
     }
 
-    static int promptChooseCards(GameDisplay display, Scanner sc, int turn, String playerName, Deck deck) {
+    static int promptChooseCards(GameDisplay display, Scanner sc, int turn, String playerName) {
         display.displayMessage("Turn: Player " + (turn + 1) + " ("+ playerName + ")\n");
         display.displayMessage("Select a card from the following options: ");
         display.displayCards();

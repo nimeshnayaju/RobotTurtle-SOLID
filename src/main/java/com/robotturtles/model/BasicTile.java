@@ -14,8 +14,4 @@ public class BasicTile {
     public void setPosition(Position position) {
         this.position = position;
     }
-
-    public void setPosition(int row, int col) {
-        this.position = new Position(row, col);
-    }
 }
