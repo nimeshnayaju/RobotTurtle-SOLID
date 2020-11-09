@@ -41,7 +41,7 @@ public class RobotTurtleController {
             int cardNumber = promptChooseCards(gameDisplay, sc, robotTurtleGame.getTurn(), robotTurtleGame.getCurrentPlayerName(), robotTurtleGame.getCurrentPlayerDeck());
             Card cardChosen = cardFromCardNumber(cardNumber);
             while (!robotTurtleGame.isValidCard(cardChosen)) {
-                gameDisplay.displayMessage("invalid card chosen (causes a collision/moves turtle out of board)! please select another card: ");
+                gameDisplay.displayMessage("invalid card chosen (causes a collision/moves turtle out of board)! please select another card\n");
                 cardNumber = promptChooseCards(gameDisplay, sc, robotTurtleGame.getTurn(), robotTurtleGame.getCurrentPlayerName(), robotTurtleGame.getCurrentPlayerDeck());
                 cardChosen = cardFromCardNumber(cardNumber);
             }

@@ -85,7 +85,31 @@ public class Game {
     }
 
     public boolean isValidCard(Card card) {
+        MovableTile currentPlayerTurtle = getCurrentPlayer().getTurtle();
+        Position currPosition = new Position(currentPlayerTurtle.getPosition().getRowNumber(), currentPlayerTurtle.getPosition().getColNumber());
+        MovableTile clonedTurtle = new Turtle(currPosition, currentPlayerTurtle.getDirection());
+        card.play(clonedTurtle);
+        // If the turtle position doesn't change, the card is valid
+        if (clonedTurtle.getPosition().equals(currPosition)) return true;
+
+        if (causesEscapingTheBoard(clonedTurtle.getPosition())) return false;
+        if (causesCollision(clonedTurtle.getPosition())) return false;
+
         return true;
+    }
+
+    private boolean causesCollision(Position position) {
+        if (this.board.isOccupied(position) && !position.equals(getCurrentPlayer().getJewel().getPosition())) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean causesEscapingTheBoard(Position position) {
+        if (position.getRowNumber() >= Board.NUM_OF_ROWS || position.getRowNumber() < 0 || position.getColNumber() >= Board.NUM_OF_COLS || position.getColNumber() <0) {
+            return true;
+        }
+        return false;
     }
 
     public void makeMove(Card card) {
