@@ -25,17 +25,12 @@ public class Player {
     private void initJewel() {
         // TODO: Need a method to calculate the Position of Jewel and not hardcode it
         switch (playerId) {
-            case 0:
-                this.jewel = new Jewel(new Position(CENTRE_INDEX_THREE,CENTRE_INDEX_THREE));
+            case 0: case 1:
+                this.jewel = new Jewel(new Position((NUM_OF_COLS-1)/2,(NUM_OF_COLS-1)/2+playerId));
                 break;
-            case 1:
-                this.jewel = new Jewel(new Position(CENTRE_INDEX_THREE,CENTRE_INDEX_FOUR));
+            case 2: case 3:
+                this.jewel = new Jewel(new Position(NUM_OF_COLS/2,(NUM_OF_COLS-1)/2+(playerId-2)));
                 break;
-            case 2:
-                this.jewel = new Jewel(new Position(CENTRE_INDEX_FOUR,CENTRE_INDEX_FOUR));
-                break;
-            case 3:
-                this.jewel = new Jewel(new Position(CENTRE_INDEX_FOUR,CENTRE_INDEX_THREE));
         }
     }
 
@@ -45,7 +40,7 @@ public class Player {
                 this.turtle = new Turtle(new Position(BOARD_INDEX_ZERO, BOARD_INDEX_ZERO), Direction.SOUTH);
                 break;
             case 1:
-                this.turtle = new Turtle(new Position(NUM_OF_COLS-1, BOARD_INDEX_ZERO), Direction.SOUTH);
+                this.turtle = new Turtle(new Position(BOARD_INDEX_ZERO,NUM_OF_COLS-1), Direction.SOUTH);
                 break;
             case 2:
                 this.turtle = new Turtle(new Position(NUM_OF_ROWS-1, NUM_OF_COLS-1), Direction.NORTH);
