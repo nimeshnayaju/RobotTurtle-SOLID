@@ -5,6 +5,9 @@ public class LeftTurn implements IMove {
     public void execute(MovableTile tile) {
         Direction currDirection = tile.getDirection();
 
+        tile.addToDirectionsFaced(currDirection);
+        tile.addToPositionsVisited(tile.getPosition());
+
         Direction newDirection;
         switch (currDirection) {
             case NORTH:
