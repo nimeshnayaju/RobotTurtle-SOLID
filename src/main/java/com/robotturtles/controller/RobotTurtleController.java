@@ -3,7 +3,6 @@ package com.robotturtles.controller;
 import com.robotturtles.model.*;
 import com.robotturtles.view.GameDisplay;
 
-import javax.print.DocFlavor;
 import java.util.Scanner;
 
 import static com.robotturtles.controller.LogicController.cardFromCardNumber;
