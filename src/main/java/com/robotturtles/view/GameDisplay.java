@@ -45,7 +45,7 @@ public class GameDisplay {
         return turtleString;
     }
 
-    public void displayDeck(/*Deck deck*/) {
+    public void displayCards() {
         // display deck here
         System.out.println("Make your choice: [1] forward; [2] Turn left; [3] Turn Right; [4] Bug");
     }

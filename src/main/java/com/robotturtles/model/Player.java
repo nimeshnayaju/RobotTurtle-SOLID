@@ -23,7 +23,6 @@ public class Player {
     }
 
     private void initJewel() {
-        // TODO: Need a method to calculate the Position of Jewel and not hardcode it
         switch (playerId) {
             case 0: case 1:
                 this.jewel = new Jewel(new Position((NUM_OF_COLS-1)/2,(NUM_OF_COLS-1)/2+playerId));
