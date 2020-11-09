@@ -34,12 +34,16 @@ public class Game {
         Player newPlayer = new Player(playerName, playerId);
         this.players.put(playerId, newPlayer);
         setUpPlayerTiles(newPlayer);
+        setUpPlayerJewel(newPlayer);
     }
 
     private void setUpPlayerTiles(Player player) {
         this.board.setUpTile(player.getTurtle());
     }
 
+    private void setUpPlayerJewel(Player player) {
+        this.board.setUpTile(player.getJewel());
+    }
     /**
      * Method to return the current state of the game
      * @return current state of the game

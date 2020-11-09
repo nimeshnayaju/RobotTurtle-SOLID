@@ -1,7 +1,6 @@
 package com.robotturtles.view;
 
-import com.robotturtles.model.Board;
-import com.robotturtles.model.Deck;
+import com.robotturtles.model.*;
 
 public class GameDisplay {
 
@@ -11,10 +10,44 @@ public class GameDisplay {
      */
     public void displayBoard(Board gameBoard) {
         // display board here
+        for (int i = 0; i < Board.NUM_OF_ROWS; i++) {
+            for (int j = 0; j < Board.NUM_OF_COLS; j++) {
+                if (gameBoard.isOccupied(i, j)) {
+                    BasicTile currTile= gameBoard.getTile(i, j);
+                    if(currTile instanceof Turtle) {
+                        Direction currDirection = ((Turtle) currTile).getDirection();
+                        System.out.print(printTurtle(currTile,currDirection));
+                    }else if(currTile instanceof Jewel){
+                        System.out.print(" J ");
+                    }
+                } else {
+                    System.out.print(" ✕ ");
+                }
+                if (j != Board.NUM_OF_COLS -1) {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+        }
     }
 
-    public void displayDeck(Deck deck) {
+    public String printTurtle(BasicTile currentTurtle,Direction direction) {
+        String turtleString = "";
+        if (direction == Direction.NORTH) {
+            turtleString += " ↑ ";
+        } else if (direction == Direction.SOUTH) {
+            turtleString += " ↓ ";
+        } else if (direction == Direction.EAST) {
+            turtleString += " → ";
+        } else {
+            turtleString += " ← ";
+        }
+        return turtleString;
+    }
+
+    public void displayDeck(/*Deck deck*/) {
         // display deck here
+        System.out.println("Make your choice: [1] forward; [2] Turn left; [3] Turn Right; [4] Bug");
     }
 
     /**
