@@ -31,7 +31,7 @@ public class GameDisplay {
         }
     }
 
-    public String printTurtle(BasicTile currentTurtle,Direction direction) {
+    private String printTurtle(BasicTile currentTurtle,Direction direction) {
         String turtleString = "";
         if (direction == Direction.NORTH) {
             turtleString += " ↑ ";

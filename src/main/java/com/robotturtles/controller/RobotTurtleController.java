@@ -49,8 +49,6 @@ public class RobotTurtleController {
         } while (robotTurtleGame.getGameState() == GameState.IN_PROGRESS);
     }
 
-
-
     static void addPlayerToGame(String[] playerNames, Game game) {
         for (int i = 0; i < playerNames.length; i++) {
             game.addPlayer(playerNames[i], i);
