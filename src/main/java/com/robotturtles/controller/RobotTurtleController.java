@@ -35,12 +35,13 @@ public class RobotTurtleController {
     private void playGame() {
         int numOfPlayers = promptNumOfPlayers(gameDisplay, sc);
         robotTurtleGame = new Game(numOfPlayers);
+        GameLogic robotTurtleLogic = new GameLogic(robotTurtleGame);
         addPlayerToGame(promptPlayerNames(gameDisplay, sc, numOfPlayers), robotTurtleGame);
         do {
             gameDisplay.displayBoard(robotTurtleGame.getBoard());
             int cardNumber = promptChooseCards(gameDisplay, sc, robotTurtleGame.getTurn(), robotTurtleGame.getCurrentPlayerName(), robotTurtleGame.getCurrentPlayerDeck());
             Card cardChosen = cardFromCardNumber(cardNumber);
-            while (!robotTurtleGame.isValidCard(cardChosen)) {
+            while (!robotTurtleLogic.isValidCard(cardChosen)) {
                 gameDisplay.displayMessage("invalid card chosen (causes a collision/moves turtle out of board)! please select another card\n");
                 cardNumber = promptChooseCards(gameDisplay, sc, robotTurtleGame.getTurn(), robotTurtleGame.getCurrentPlayerName(), robotTurtleGame.getCurrentPlayerDeck());
                 cardChosen = cardFromCardNumber(cardNumber);
@@ -48,10 +49,10 @@ public class RobotTurtleController {
             robotTurtleGame.makeMove(cardChosen);
             int turn = robotTurtleGame.getTurn();
             String playerName = robotTurtleGame.getCurrentPlayerName();
-            if (robotTurtleGame.checkForPlayerWin()) {
+            if (robotTurtleLogic.checkForPlayerWin()) {
                 gameDisplay.displayMessage("Player " + (turn + 1) + " (" + playerName + ")" + " has successfully completed the game!\n");
             }
-            if (!robotTurtleGame.checkForGameCompletion()) {
+            if (!robotTurtleLogic.checkForGameCompletion()) {
                 robotTurtleGame.assignTurnToNextPlayer();
             }
         } while (robotTurtleGame.getGameState() == GameState.IN_PROGRESS);
