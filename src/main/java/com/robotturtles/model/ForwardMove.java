@@ -7,6 +7,9 @@ public class ForwardMove implements IMove {
         Position currPosition = tile.getPosition();
         Direction currDirection = tile.getDirection();
 
+        tile.addToDirectionsFaced(currDirection);
+        tile.addToPositionsVisited(currPosition);
+
         int rowNumber = currPosition.getRowNumber();
         int colNumber = currPosition.getColNumber();
 

@@ -1,6 +1,7 @@
 package com.robotturtles.model;
 
 import java.util.HashMap;
+import java.util.Stack;
 
 public class Game {
     private static final int INITIAL_TURN = 0;
@@ -89,17 +90,33 @@ public class Game {
     }
 
     public boolean isValidCard(Card card) {
+        if (card == null) return false;
+
         MovableTile currentPlayerTurtle = getCurrentPlayer().getTurtle();
-        Position currPosition = new Position(currentPlayerTurtle.getPosition().getRowNumber(), currentPlayerTurtle.getPosition().getColNumber());
-        MovableTile clonedTurtle = new Turtle(currPosition, currentPlayerTurtle.getDirection());
+        MovableTile clonedTurtle = copyTileContents(currentPlayerTurtle);
+
         card.play(clonedTurtle);
         // If the turtle position doesn't change, the card is valid
-        if (clonedTurtle.getPosition().equals(currPosition)) return true;
+        if (clonedTurtle.getPosition().equals(currentPlayerTurtle.getPosition())) return true;
 
         if (causesEscapingTheBoard(clonedTurtle.getPosition())) return false;
         if (causesCollision(clonedTurtle.getPosition())) return false;
 
         return true;
+    }
+
+    private MovableTile copyTileContents(MovableTile tile) {
+        Position currPosition = new Position(tile.getPosition().getRowNumber(), tile.getPosition().getColNumber());
+        MovableTile clonedTile = new Turtle(currPosition, tile.getDirection());
+        // Copy directionsFaced and positionVisited Stack into clonedTile
+        Stack<Direction> directionsFaced = new Stack<>();
+        directionsFaced.addAll(tile.getDirectionsFaced());
+        clonedTile.setDirectionsFaced(directionsFaced);
+
+        Stack<Position> positionsVisited = new Stack<>();
+        positionsVisited.addAll(tile.getPositionsVisited());
+        clonedTile.setPositionsVisited(positionsVisited);;
+        return clonedTile;
     }
 
     private boolean causesCollision(Position position) {
