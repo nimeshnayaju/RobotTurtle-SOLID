@@ -3,6 +3,7 @@ package com.robotturtles.controller;
 import com.robotturtles.model.*;
 import com.robotturtles.view.GameDisplay;
 
+import javax.print.DocFlavor;
 import java.util.Scanner;
 
 import static com.robotturtles.controller.LogicController.cardFromCardNumber;
@@ -46,6 +47,14 @@ public class RobotTurtleController {
                 cardChosen = cardFromCardNumber(cardNumber);
             }
             robotTurtleGame.makeMove(cardChosen);
+            int turn = robotTurtleGame.getTurn();
+            String playerName = robotTurtleGame.getCurrentPlayerName();
+            if (robotTurtleGame.checkForPlayerWin()) {
+                gameDisplay.displayMessage("Player " + (turn + 1) + " (" + playerName + ")" + " has successfully completed the game!\n");
+            }
+            if (!robotTurtleGame.checkForGameCompletion()) {
+                robotTurtleGame.assignTurnToNextPlayer();
+            }
         } while (robotTurtleGame.getGameState() == GameState.IN_PROGRESS);
     }
 

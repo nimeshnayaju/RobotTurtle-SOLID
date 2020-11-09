@@ -88,6 +88,16 @@ public class Game {
         return this.players.get(turn);
     }
 
+    /**
+     * Assigns turn to the next player
+     */
+    public void assignTurnToNextPlayer() {
+        turn = (turn + 1) % numOfPlayers;
+        while (players.get(turn) == null) {
+            turn = (turn + 1) % numOfPlayers;
+        }
+    }
+
     public boolean isValidCard(Card card) {
         MovableTile currentPlayerTurtle = getCurrentPlayer().getTurtle();
         Position currPosition = new Position(currentPlayerTurtle.getPosition().getRowNumber(), currentPlayerTurtle.getPosition().getColNumber());
@@ -122,4 +132,33 @@ public class Game {
         card.play(getCurrentPlayer().getTurtle());
         board.makeMove(oldPosition, currentPlayer.getTurtle().getPosition(), currentPlayer.getTurtle());
     }
+
+    /**
+     * Checks if the executing the move results in the player successfully completing the game
+     * @return true if the move results in the player completing the game; false otherwise
+     */
+    public boolean checkForPlayerWin() {
+        // Check if the executing the move results in the player successfully completing the game
+        // Set the GameState to Completed if all players have finished the game
+        Position turtlePosition = getCurrentPlayer().getTurtle().getPosition();
+        Position jewelPosition = getCurrentPlayer().getJewel().getPosition();
+        if (turtlePosition.equals(jewelPosition)) {
+            this.players.remove(getTurn());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the executing the move results in the all players completing the game
+     * @return true if the move results in the all players completing the game; false otherwise
+     */
+    public boolean checkForGameCompletion() {
+        if (players.isEmpty()) {
+            this.gameState = GameState.COMPLETED;
+            return true;
+        }
+        return false;
+    }
+
 }
