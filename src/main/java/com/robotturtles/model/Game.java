@@ -1,5 +1,6 @@
 package com.robotturtles.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -29,6 +30,10 @@ public class Game {
         } else {
             throw new IllegalArgumentException("invalid number of players");
         }
+    }
+
+    public int getNumOfPlayers() {
+        return numOfPlayers;
     }
 
     public void addPlayer(String playerName, int playerId) {
@@ -170,4 +175,24 @@ public class Game {
         return false;
     }
 
+    public ArrayList<TileInfo> getAllTurtlesInfo() {
+        ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
+        for (Player player: players.values()) {
+            Position position = player.getTurtle().getPosition();
+            Direction direction = player.getTurtle().getDirection();
+            boolean active = player.getPlayerId() == getTurn();
+            info.add(new TileInfo(position, direction, active));
+        }
+        return info;
+    }
+
+    public ArrayList<TileInfo> getAllJewelInfo() {
+        ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
+        for (Player player: players.values()) {
+            Position position = player.getJewel().getPosition();
+            boolean active = player.getPlayerId() == getTurn();
+            info.add(new TileInfo(position, null, active));
+        }
+        return info;
+    }
 }

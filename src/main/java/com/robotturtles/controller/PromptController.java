@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import static com.robotturtles.controller.LogicController.validateNumOfPlayers;
 
+
 public class PromptController {
 
     /**

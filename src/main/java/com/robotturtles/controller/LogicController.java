@@ -8,6 +8,12 @@ public class LogicController {
     private static final int RIGHT_TURN_CARD = 3;
     private static final int BUG_CARD = 4;
 
+    private Game game;
+
+    public LogicController(Game game) {
+        this.game = game;
+    }
+
     /**
      * Helper method to check if the number of players entered is valid or not
      * @param numOfPlayers number of players entered
@@ -17,7 +23,7 @@ public class LogicController {
         return numOfPlayers >= 1 && numOfPlayers <= 4;
     }
 
-    static Card cardFromCardNumber(int cardNumber) {
+    public Card cardFromCardNumber(int cardNumber) {
         Card card;
         switch (cardNumber) {
             case FORWARD_CARD:
@@ -36,5 +42,11 @@ public class LogicController {
                 card = null;
         }
         return card;
+    }
+
+    public void addPlayerToGame(String[] playerNames, Game game) {
+        for (int i = 0; i < playerNames.length; i++) {
+            game.addPlayer(playerNames[i], i);
+        }
     }
 }

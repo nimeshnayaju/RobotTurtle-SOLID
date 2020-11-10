@@ -5,7 +5,6 @@ import com.robotturtles.view.GameDisplay;
 
 import java.util.Scanner;
 
-import static com.robotturtles.controller.LogicController.cardFromCardNumber;
 import static com.robotturtles.controller.PromptController.*;
 
 public class RobotTurtleController {
@@ -35,15 +34,19 @@ public class RobotTurtleController {
     private void playGame() {
         int numOfPlayers = promptNumOfPlayers(gameDisplay, sc);
         robotTurtleGame = new Game(numOfPlayers);
-        addPlayerToGame(promptPlayerNames(gameDisplay, sc, numOfPlayers), robotTurtleGame);
+        gameDisplay.setControllerModel(new ManipulateModel(robotTurtleGame));
+
+        LogicController logicController = new LogicController(robotTurtleGame);
+
+        logicController.addPlayerToGame(promptPlayerNames(gameDisplay, sc, numOfPlayers), robotTurtleGame);
         do {
-            gameDisplay.displayBoard(robotTurtleGame.getBoard());
+            gameDisplay.displayBoard();
             int cardNumber = promptChooseCards(gameDisplay, sc, robotTurtleGame.getTurn(), robotTurtleGame.getCurrentPlayerName());
-            Card cardChosen = cardFromCardNumber(cardNumber);
+            Card cardChosen = logicController.cardFromCardNumber(cardNumber);
             while (!robotTurtleGame.isValidCard(cardChosen)) {
                 gameDisplay.displayMessage("invalid card chosen (causes a collision/moves turtle out of board)! please select another card\n");
                 cardNumber = promptChooseCards(gameDisplay, sc, robotTurtleGame.getTurn(), robotTurtleGame.getCurrentPlayerName());
-                cardChosen = cardFromCardNumber(cardNumber);
+                cardChosen = logicController.cardFromCardNumber(cardNumber);
             }
             robotTurtleGame.makeMove(cardChosen);
             int turn = robotTurtleGame.getTurn();
@@ -57,9 +60,5 @@ public class RobotTurtleController {
         } while (robotTurtleGame.getGameState() == GameState.IN_PROGRESS);
     }
 
-    static void addPlayerToGame(String[] playerNames, Game game) {
-        for (int i = 0; i < playerNames.length; i++) {
-            game.addPlayer(playerNames[i], i);
-        }
-    }
+
 }
