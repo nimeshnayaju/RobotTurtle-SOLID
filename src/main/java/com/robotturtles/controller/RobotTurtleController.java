@@ -5,8 +5,6 @@ import com.robotturtles.view.GameDisplay;
 
 import java.util.Scanner;
 
-import static com.robotturtles.controller.PromptController.*;
-
 public class RobotTurtleController {
     private Scanner sc;
     private GameDisplay gameDisplay;
@@ -33,21 +31,22 @@ public class RobotTurtleController {
      * Starts the game of RobotTurtle
      */
     private void playGame() {
-        int numOfPlayers = promptNumOfPlayers(gameDisplay, sc);
+        PromptController promptController = new PromptController();
+        int numOfPlayers = promptController.promptNumOfPlayers(gameDisplay, sc);
         robotTurtleGame = new Game(numOfPlayers);
         robotTurtleGameOperator = new GameOperation(robotTurtleGame);
         gameDisplay.setControllerModel(new ManipulateModel(robotTurtleGame));
 
         LogicController logicController = new LogicController(robotTurtleGame);
 
-        logicController.addPlayerToGame(promptPlayerNames(gameDisplay, sc, numOfPlayers), robotTurtleGame);
+        logicController.addPlayerToGame(promptController.promptPlayerNames(gameDisplay, sc, numOfPlayers), robotTurtleGame);
         do {
             gameDisplay.displayBoard();
-            int cardNumber = promptChooseCards(gameDisplay, sc, robotTurtleGame.getTurn(), robotTurtleGame.getCurrentPlayerName());
+            int cardNumber = promptController.promptChooseCards(gameDisplay, sc, robotTurtleGame.getTurn(), robotTurtleGame.getCurrentPlayerName());
             Card cardChosen = logicController.cardFromCardNumber(cardNumber);
             while (!robotTurtleGameOperator.isValidCard(cardChosen)) {
                 gameDisplay.displayMessage("invalid card chosen (causes a collision/moves turtle out of board)! please select another card\n");
-                cardNumber = promptChooseCards(gameDisplay, sc, robotTurtleGame.getTurn(), robotTurtleGame.getCurrentPlayerName());
+                cardNumber = promptController.promptChooseCards(gameDisplay, sc, robotTurtleGame.getTurn(), robotTurtleGame.getCurrentPlayerName());
                 cardChosen = logicController.cardFromCardNumber(cardNumber);
             }
             robotTurtleGameOperator.makeMove(cardChosen);
