@@ -1,52 +1,75 @@
 package com.robotturtles.view;
 
+import com.robotturtles.controller.DisplayFormat;
+import com.robotturtles.controller.ManipulateModel;
 import com.robotturtles.model.*;
 
 public class GameDisplay {
+    private static final int ROW_INDEX = 0;
+    private static final int COLUMN_INDEX = 1;
+
+    ManipulateModel controllerModel;
 
     /**
      * Displays the Board in terminal
-     * @param gameBoard board to be displayed
      */
-    public void displayBoard(Board gameBoard) {
-        // display board here
-        for (int i = 0; i < Board.NUM_OF_ROWS; i++) {
-            for (int j = 0; j < Board.NUM_OF_COLS; j++) {
-                if (gameBoard.isOccupied(i, j)) {
-                    BasicTile currTile= gameBoard.getTile(i, j);
-                    if(currTile instanceof Turtle) {
-                        Direction currDirection = ((Turtle) currTile).getDirection();
-                        System.out.print(printTurtle(currTile,currDirection));
-                    }else if(currTile instanceof Jewel){
-                        System.out.print(" J ");
-                    }
+    public void displayBoard() {
+        String[][] commandLineBoard = new String[Board.NUM_OF_ROWS][Board.NUM_OF_COLS];
+
+        for (DisplayFormat turtleInfo : controllerModel.getTurtleInfo()) {
+            int rowNumber = turtleInfo.getPosition()[ROW_INDEX];
+            int colNumber = turtleInfo.getPosition()[COLUMN_INDEX];
+            commandLineBoard[rowNumber][colNumber] = turtle(turtleInfo.getDirection(), turtleInfo.isActive());
+        }
+
+        for (DisplayFormat jewelInfo : controllerModel.getJewelInfo()) {
+            int rowNumber = jewelInfo.getPosition()[ROW_INDEX];
+            int colNumber = jewelInfo.getPosition()[COLUMN_INDEX];
+            commandLineBoard[rowNumber][colNumber] = jewel(jewelInfo.isActive());
+        }
+
+        for (int row = 0; row < commandLineBoard.length; row++) {
+            for (int col = 0; col < commandLineBoard[row].length; col++) {
+                if (commandLineBoard[row][col] == null) {
+                    System.out.print("   ");
                 } else {
-                    System.out.print(" ✕ ");
+                    System.out.print(commandLineBoard[row][col]);
                 }
-                if (j != Board.NUM_OF_COLS -1) {
-                    System.out.print(" ");
+                if (col < commandLineBoard[row].length - 1) {
+                    System.out.print("|");
+                } else {
+                    System.out.println();
                 }
             }
-            System.out.println();
         }
     }
 
-    private String printTurtle(BasicTile currentTurtle,Direction direction) {
-        String turtleString = "";
+    public void setControllerModel(ManipulateModel controllerModel) {
+        this.controllerModel = controllerModel;
+    }
+
+    private String turtle(Direction direction, boolean active) {
+        String turtleString = active ? "(" : " ";
         if (direction == Direction.NORTH) {
-            turtleString += " ↑ ";
+            turtleString += "↑";
         } else if (direction == Direction.SOUTH) {
-            turtleString += " ↓ ";
+            turtleString += "↓";
         } else if (direction == Direction.EAST) {
-            turtleString += " → ";
+            turtleString += "→";
         } else {
-            turtleString += " ← ";
+            turtleString += "←";
         }
+        turtleString += active ? ")" : " ";
         return turtleString;
     }
 
+    private String jewel(boolean active) {
+        String jewelString = active ? "(" : " ";
+        jewelString += "J" + (active ? ")" : " ");
+        return jewelString;
+    }
+
     public void displayCards() {
-        // display deck here
         System.out.println("Make your choice: [1] forward; [2] Turn left; [3] Turn Right; [4] Bug");
     }
 

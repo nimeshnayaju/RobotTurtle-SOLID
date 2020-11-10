@@ -56,4 +56,8 @@ public class Player {
     public BasicTile getJewel() {
         return this.jewel;
     }
+
+    public int getPlayerId() {
+        return playerId;
+    }
 }
