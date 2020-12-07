@@ -6,12 +6,14 @@ import java.util.Stack;
 
 public class Game {
     private static final int INITIAL_TURN = 0;
+    private static final int INITIAL_POSITION = 0;
 
     private int numOfPlayers;
     private Board board;
     private int turn;
     private HashMap<Integer, Player> players;
     private GameState gameState;
+    private ArrayList<StoneWall> stoneWallLst;
 
     public Game(int numOfPlayers) {
         setNumOfPlayers(numOfPlayers);
@@ -19,6 +21,7 @@ public class Game {
         this.turn = INITIAL_TURN;
         this.players = new HashMap<>();
         this.gameState = GameState.IN_PROGRESS;
+        this.stoneWallLst = this.generateAllStoneWall();
     }
 
     /**
@@ -30,6 +33,19 @@ public class Game {
         } else {
             throw new IllegalArgumentException("invalid number of players");
         }
+    }
+
+    public ArrayList<StoneWall> getStoneWallLst() {
+        return stoneWallLst;
+    }
+
+    private ArrayList<StoneWall> generateAllStoneWall(){
+        ArrayList<StoneWall> stonewalls = new ArrayList<StoneWall>();
+        for (int i = 0; i < numOfPlayers; i++) {
+            StoneWall stonewall = new StoneWall(new Position(INITIAL_POSITION,INITIAL_POSITION));
+            stonewalls.add((stonewall));
+        }
+        return stonewalls;
     }
 
     public int getNumOfPlayers() {
@@ -108,6 +124,7 @@ public class Game {
 
         if (causesEscapingTheBoard(clonedTurtle.getPosition())) return false;
         if (causesCollision(clonedTurtle.getPosition())) return false;
+        if (causesCollisionStoneWall(clonedTurtle.getPosition())) return false;
 
         return true;
     }
@@ -122,7 +139,7 @@ public class Game {
 
         Stack<Position> positionsVisited = new Stack<>();
         positionsVisited.addAll(tile.getPositionsVisited());
-        clonedTile.setPositionsVisited(positionsVisited);;
+        clonedTile.setPositionsVisited(positionsVisited);
         return clonedTile;
     }
 
@@ -131,6 +148,22 @@ public class Game {
             return true;
         }
         return false;
+    }
+
+    private boolean causesCollisionStoneWall(Position position) {
+        if ( !collisionWithAnyStoneWall(position) ) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean collisionWithAnyStoneWall(Position position){
+        for (StoneWall stonewall: getStoneWallLst()) {
+            if(position.equals(stonewall.getPosition())){
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean causesEscapingTheBoard(Position position) {
@@ -191,6 +224,16 @@ public class Game {
         for (Player player: players.values()) {
             Position position = player.getJewel().getPosition();
             boolean active = player.getPlayerId() == getTurn();
+            info.add(new TileInfo(position, null, active));
+        }
+        return info;
+    }
+
+    public ArrayList<TileInfo> getAllStoneWallInfo() {
+        ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
+        for (StoneWall stoneWall: stoneWallLst) {
+            Position position = stoneWall.getPosition();
+            boolean active = true;
             info.add(new TileInfo(position, null, active));
         }
         return info;

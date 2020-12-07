@@ -28,6 +28,12 @@ public class GameDisplay {
             commandLineBoard[rowNumber][colNumber] = jewel(jewelInfo.isActive());
         }
 
+        for (DisplayFormat stoneWallInfo : controllerModel.getStoneWallInfo()) {
+            int rowNumber = stoneWallInfo.getPosition()[ROW_INDEX];
+            int colNumber = stoneWallInfo.getPosition()[COLUMN_INDEX];
+            commandLineBoard[rowNumber][colNumber] = stoneWall();
+        }
+
         for (int row = 0; row < commandLineBoard.length; row++) {
             for (int col = 0; col < commandLineBoard[row].length; col++) {
                 if (commandLineBoard[row][col] == null) {
@@ -67,6 +73,11 @@ public class GameDisplay {
         String jewelString = active ? "(" : " ";
         jewelString += "J" + (active ? ")" : " ");
         return jewelString;
+    }
+
+    private String stoneWall() {
+        String stoneWallString = " S ";
+        return stoneWallString;
     }
 
     public void displayCards() {

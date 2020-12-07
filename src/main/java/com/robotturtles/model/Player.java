@@ -5,17 +5,21 @@ import static com.robotturtles.model.Board.*;
 public class Player {
 
     private static final int BOARD_INDEX_ZERO = 0;
+    private static final int DEFAULT_POSITION = 1;
 
     private String playerName;
     private int playerId;
     private MovableTile turtle;
     private BasicTile jewel;
+    private StoneWall stoneWall;
+
 
     public Player(String playerName, int playerId) {
         this.playerName = playerName;
         this.playerId = playerId;
         initTurtle();
         initJewel();
+        initStoneWall();
     }
 
     private void initJewel() {
@@ -45,6 +49,10 @@ public class Player {
         }
     }
 
+    private void initStoneWall(){
+        stoneWall = new StoneWall(new Position(DEFAULT_POSITION,DEFAULT_POSITION));
+    }
+
     public MovableTile getTurtle() {
         return this.turtle;
     }
@@ -59,5 +67,9 @@ public class Player {
 
     public int getPlayerId() {
         return playerId;
+    }
+
+    public StoneWall getStoneWall() {
+        return stoneWall;
     }
 }
