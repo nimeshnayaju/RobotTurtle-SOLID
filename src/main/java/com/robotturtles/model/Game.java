@@ -119,4 +119,93 @@ public class Game {
         }
         return info;
     }
+
+    /**
+     * Assigns turn to the next player
+     */
+    public void assignTurnToNextPlayer() {
+        turn = (turn + 1) % numOfPlayers;
+        while (players.get(turn) == null) {
+            turn = (turn + 1) % numOfPlayers;
+        }
+    }
+
+    public boolean isValidCard(Card card) {
+        if (card == null) return false;
+
+        MovableTile currentPlayerTurtle = getCurrentPlayer().getTurtle();
+        MovableTile clonedTurtle = copyTileContents(currentPlayerTurtle);
+
+        card.play(clonedTurtle);
+        // If the turtle position doesn't change, the card is valid
+        if (clonedTurtle.getPosition().equals(currentPlayerTurtle.getPosition())) return true;
+
+        if (causesEscapingTheBoard(clonedTurtle.getPosition())) return false;
+        if (causesCollision(clonedTurtle.getPosition())) return false;
+
+        return true;
+    }
+
+    private MovableTile copyTileContents(MovableTile tile) {
+        Position currPosition = new Position(tile.getPosition().getRowNumber(), tile.getPosition().getColNumber());
+        MovableTile clonedTile = new Turtle(currPosition, tile.getDirection());
+        // Copy directionsFaced and positionVisited Stack into clonedTile
+        Stack<Direction> directionsFaced = new Stack<>();
+        directionsFaced.addAll(tile.getDirectionsFaced());
+        clonedTile.setDirectionsFaced(directionsFaced);
+
+        Stack<Position> positionsVisited = new Stack<>();
+        positionsVisited.addAll(tile.getPositionsVisited());
+        clonedTile.setPositionsVisited(positionsVisited);;
+        return clonedTile;
+    }
+
+    private boolean causesCollision(Position position) {
+        if (this.board.isOccupied(position) && !position.equals(getCurrentPlayer().getJewel().getPosition())) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean causesEscapingTheBoard(Position position) {
+        if (position.getRowNumber() >= Board.NUM_OF_ROWS || position.getRowNumber() < 0 || position.getColNumber() >= Board.NUM_OF_COLS || position.getColNumber() <0) {
+            return true;
+        }
+        return false;
+    }
+
+    public void makeMove(Card card) {
+        Player currentPlayer = getCurrentPlayer();
+        Position oldPosition = currentPlayer.getTurtle().getPosition();
+        card.play(getCurrentPlayer().getTurtle());
+        board.makeMove(oldPosition, currentPlayer.getTurtle().getPosition(), currentPlayer.getTurtle());
+    }
+
+    /**
+     * Checks if the executing the move results in the player successfully completing the game
+     * @return true if the move results in the player completing the game; false otherwise
+     */
+    public boolean checkForPlayerWin() {
+        // Check if the executing the move results in the player successfully completing the game
+        // Set the GameState to Completed if all players have finished the game
+        Position turtlePosition = getCurrentPlayer().getTurtle().getPosition();
+        Position jewelPosition = getCurrentPlayer().getJewel().getPosition();
+        if (turtlePosition.equals(jewelPosition)) {
+            this.players.remove(getTurn());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the executing the move results in the all players completing the game
+     * @return true if the move results in the all players completing the game; false otherwise
+     */
+    public boolean checkForGameCompletion() {
+        if (players.isEmpty()) {
+            this.gameState = GameState.COMPLETED;
+            return true;
+        }
+        return false;
+    }
 }
