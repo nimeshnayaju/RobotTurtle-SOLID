@@ -59,19 +59,25 @@ public class Game {
         setUpPlayerJewel(newPlayer);
     }
 
-    private void setUpPlayerTiles(Player player) {
+    public void setUpPlayerTiles(Player player) {
         this.board.setUpTile(player.getTurtle());
     }
 
-    private void setUpPlayerJewel(Player player) {
+    public void setUpPlayerJewel(Player player) {
         this.board.setUpTile(player.getJewel());
     }
+
+
     /**
      * Method to return the current state of the game
      * @return current state of the game
      */
     public GameState getGameState() {
         return this.gameState;
+    }
+
+    public void setGameState(GameState state){
+        gameState  = state;
     }
 
     /**
@@ -90,6 +96,13 @@ public class Game {
         return this.turn;
     }
 
+    public void setTurn(int turn){
+        this.turn = turn;
+    }
+
+    public HashMap<Integer,Player> getSetPlayers(){
+        return players;
+    }
 
     /**
      * Returns the player name associated with the specified turn
@@ -98,8 +111,29 @@ public class Game {
         return getCurrentPlayer().getPlayerName();
     }
 
-    private Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return this.players.get(turn);
+    }
+
+    public ArrayList<TileInfo> getAllTurtlesInfo() {
+        ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
+        for (Player player: players.values()) {
+            Position position = player.getTurtle().getPosition();
+            Direction direction = player.getTurtle().getDirection();
+            boolean active = player.getPlayerId() == getTurn();
+            info.add(new TileInfo(position, direction, active));
+        }
+        return info;
+    }
+
+    public ArrayList<TileInfo> getAllJewelInfo() {
+        ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
+        for (Player player: players.values()) {
+            Position position = player.getJewel().getPosition();
+            boolean active = player.getPlayerId() == getTurn();
+            info.add(new TileInfo(position, null, active));
+        }
+        return info;
     }
 
     /**
@@ -207,7 +241,7 @@ public class Game {
         }
         return false;
     }
-
+  
     public ArrayList<TileInfo> getAllTurtlesInfo() {
         ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
         for (Player player: players.values()) {

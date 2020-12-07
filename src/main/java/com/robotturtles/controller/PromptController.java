@@ -13,7 +13,7 @@ public class PromptController {
      * Displays a prompt to enter the number of players
      * @return (valid) number of players
      */
-    static int promptNumOfPlayers(GameDisplay display, Scanner sc) {
+    public int promptNumOfPlayers(GameDisplay display, Scanner sc) {
         int numOfPlayers = Integer.MIN_VALUE;
         while (!validateNumOfPlayers(numOfPlayers)) {
             display.displayMessage("Enter the number of players (1 to 4): ");
@@ -31,7 +31,7 @@ public class PromptController {
      * Prompts each player for their name
      * @return an array containing the list of the player name
      */
-    static String[] promptPlayerNames(GameDisplay display, Scanner sc, int numOfPlayers) {
+    public String[] promptPlayerNames(GameDisplay display, Scanner sc, int numOfPlayers) {
         String[] playerNames = new String[numOfPlayers];
         for (int i = 1; i <= numOfPlayers; i++) {
             display.displayMessage("Enter Player " + i + "'s name: ");
@@ -41,7 +41,7 @@ public class PromptController {
         return playerNames;
     }
 
-    static int promptChooseCards(GameDisplay display, Scanner sc, int turn, String playerName) {
+    public int promptChooseCards(GameDisplay display, Scanner sc, int turn, String playerName) {
         display.displayMessage("Turn: Player " + (turn + 1) + " ("+ playerName + ")\n");
         display.displayMessage("Select a card from the following options: ");
         display.displayCards();

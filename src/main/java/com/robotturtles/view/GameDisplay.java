@@ -81,7 +81,7 @@ public class GameDisplay {
     }
 
     public void displayCards() {
-        System.out.println("Make your choice: [1] forward; [2] Turn left; [3] Turn Right; [4] Bug");
+        System.out.println("Make your choice: [1] Forward; [2] Turn left; [3] Turn Right; [4] Bug");
     }
 
     /**
