@@ -1,17 +1,19 @@
 package com.robotturtles.model;
 
-public class BasicTile {
+public class Portal implements Movable {
     private Position position;
 
-    public BasicTile(Position position) {
+    public Portal(Position position) {
         this.position = position;
     }
 
-    public Position getPosition() {
-        return this.position;
-    }
-
+    @Override
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    @Override
+    public Position getPosition() {
+        return this.position;
     }
 }

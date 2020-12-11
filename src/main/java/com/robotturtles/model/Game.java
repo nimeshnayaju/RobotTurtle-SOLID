@@ -13,7 +13,7 @@ public class Game {
     private int turn;
     private HashMap<Integer, Player> players;
     private GameState gameState;
-    private ArrayList<StoneWall> stoneWallLst;
+    private ArrayList<StoneWall> stoneWalls;
 
     public Game(int numOfPlayers) {
         setNumOfPlayers(numOfPlayers);
@@ -21,7 +21,7 @@ public class Game {
         this.turn = INITIAL_TURN;
         this.players = new HashMap<>();
         this.gameState = GameState.IN_PROGRESS;
-        this.stoneWallLst = this.generateAllStoneWall();
+        this.stoneWalls = this.generateAllStoneWall();
     }
 
     /**
@@ -36,14 +36,15 @@ public class Game {
     }
 
     public ArrayList<StoneWall> getStoneWallLst() {
-        return stoneWallLst;
+        return stoneWalls;
     }
 
     private ArrayList<StoneWall> generateAllStoneWall(){
-        ArrayList<StoneWall> stonewalls = new ArrayList<StoneWall>();
+        ArrayList<StoneWall> stonewalls = new ArrayList<>();
         for (int i = 0; i < numOfPlayers; i++) {
             StoneWall stonewall = new StoneWall(new Position(INITIAL_POSITION,INITIAL_POSITION));
             stonewalls.add((stonewall));
+            this.board.setUpTile(stonewall);
         }
         return stonewalls;
     }
@@ -55,18 +56,17 @@ public class Game {
     public void addPlayer(String playerName, int playerId) {
         Player newPlayer = new Player(playerName, playerId);
         this.players.put(playerId, newPlayer);
-        setUpPlayerTiles(newPlayer);
+        setUpPlayerTurtle(newPlayer);
         setUpPlayerJewel(newPlayer);
     }
 
-    public void setUpPlayerTiles(Player player) {
+    public void setUpPlayerTurtle(Player player) {
         this.board.setUpTile(player.getTurtle());
     }
 
     public void setUpPlayerJewel(Player player) {
         this.board.setUpTile(player.getJewel());
     }
-
 
     /**
      * Method to return the current state of the game
@@ -149,8 +149,8 @@ public class Game {
     public boolean isValidCard(Card card) {
         if (card == null) return false;
 
-        MovableTile currentPlayerTurtle = getCurrentPlayer().getTurtle();
-        MovableTile clonedTurtle = copyTileContents(currentPlayerTurtle);
+        Turtle currentPlayerTurtle = getCurrentPlayer().getTurtle();
+        Turtle clonedTurtle = copyTileContents(currentPlayerTurtle);
 
         card.play(clonedTurtle);
         // If the turtle position doesn't change, the card is valid
@@ -158,14 +158,13 @@ public class Game {
 
         if (causesEscapingTheBoard(clonedTurtle.getPosition())) return false;
         if (causesCollision(clonedTurtle.getPosition())) return false;
-        if (causesCollisionStoneWall(clonedTurtle.getPosition())) return false;
 
         return true;
     }
 
-    private MovableTile copyTileContents(MovableTile tile) {
+    private Turtle copyTileContents(Turtle tile) {
         Position currPosition = new Position(tile.getPosition().getRowNumber(), tile.getPosition().getColNumber());
-        MovableTile clonedTile = new Turtle(currPosition, tile.getDirection());
+        Turtle clonedTile = new Turtle(currPosition, tile.getDirection());
         // Copy directionsFaced and positionVisited Stack into clonedTile
         Stack<Direction> directionsFaced = new Stack<>();
         directionsFaced.addAll(tile.getDirectionsFaced());
@@ -182,22 +181,6 @@ public class Game {
             return true;
         }
         return false;
-    }
-
-    private boolean causesCollisionStoneWall(Position position) {
-        if ( !collisionWithAnyStoneWall(position) ) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean collisionWithAnyStoneWall(Position position){
-        for (StoneWall stonewall: getStoneWallLst()) {
-            if(position.equals(stonewall.getPosition())){
-                return false;
-            }
-        }
-        return true;
     }
 
     private boolean causesEscapingTheBoard(Position position) {
@@ -241,31 +224,10 @@ public class Game {
         }
         return false;
     }
-  
-    public ArrayList<TileInfo> getAllTurtlesInfo() {
-        ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
-        for (Player player: players.values()) {
-            Position position = player.getTurtle().getPosition();
-            Direction direction = player.getTurtle().getDirection();
-            boolean active = player.getPlayerId() == getTurn();
-            info.add(new TileInfo(position, direction, active));
-        }
-        return info;
-    }
-
-    public ArrayList<TileInfo> getAllJewelInfo() {
-        ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
-        for (Player player: players.values()) {
-            Position position = player.getJewel().getPosition();
-            boolean active = player.getPlayerId() == getTurn();
-            info.add(new TileInfo(position, null, active));
-        }
-        return info;
-    }
 
     public ArrayList<TileInfo> getAllStoneWallInfo() {
         ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
-        for (StoneWall stoneWall: stoneWallLst) {
+        for (StoneWall stoneWall: stoneWalls) {
             Position position = stoneWall.getPosition();
             boolean active = true;
             info.add(new TileInfo(position, null, active));

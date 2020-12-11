@@ -1,7 +1,6 @@
 package com.robotturtles.controller;
 
 import com.robotturtles.model.Game;
-import com.robotturtles.model.Position;
 import com.robotturtles.model.TileInfo;
 
 import java.util.ArrayList;

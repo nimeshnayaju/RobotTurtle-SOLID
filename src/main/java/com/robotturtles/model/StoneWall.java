@@ -2,12 +2,13 @@ package com.robotturtles.model;
 
 import java.util.Random;
 
-public class StoneWall extends BasicTile {
+public class StoneWall implements Movable {
     public static final int UPPERBOUND = 5;
     public static final int LOWERBOUND = 1;
 
+    private Position position;
+
     public StoneWall(Position position){
-        super(position);
         this.setPosition( generate_stone_wall() );
     }
 
@@ -26,5 +27,15 @@ public class StoneWall extends BasicTile {
             generate_num = rand.nextInt((upperbound - lowerbound) + 1) + lowerbound;
         }while(generate_num == 3 || generate_num == 4);
         return generate_num;
+    }
+
+    @Override
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    @Override
+    public Position getPosition() {
+        return this.position;
     }
 }

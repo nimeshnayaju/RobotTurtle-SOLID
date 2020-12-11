@@ -7,7 +7,7 @@ public class Card {
         this.associatedMove = move;
     }
 
-    public void play(MovableTile tile) {
-        associatedMove.execute(tile);
+    public void play(Turtle turtle) {
+        associatedMove.execute(turtle);
     }
 }
