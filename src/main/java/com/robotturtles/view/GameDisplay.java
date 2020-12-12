@@ -5,53 +5,28 @@ import com.robotturtles.controller.ManipulateModel;
 import com.robotturtles.model.game.Board;
 import com.robotturtles.model.tile.Direction;
 
+import java.util.ArrayList;
+
 public class GameDisplay {
     private static final int ROW_INDEX = 0;
     private static final int COLUMN_INDEX = 1;
 
     ManipulateModel controllerModel;
+    String[][] commandLineBoard;
 
     /**
      * Displays the Board in terminal
      */
     public void displayBoard() {
-        String[][] commandLineBoard = new String[Board.NUM_OF_ROWS][Board.NUM_OF_COLS];
+        commandLineBoard = new String[Board.NUM_OF_ROWS][Board.NUM_OF_COLS];
+        populateBoard();
+        printBoard();
+    }
 
-        for (DisplayFormat portalInfo : controllerModel.getPortalInfo()) {
-            int rowNumber = portalInfo.getPosition()[ROW_INDEX];
-            int colNumber = portalInfo.getPosition()[COLUMN_INDEX];
-            commandLineBoard[rowNumber][colNumber] = portal();
-        }
-
-        for (DisplayFormat crateInfo : controllerModel.getCrateInfo()) {
-            int rowNumber = crateInfo.getPosition()[ROW_INDEX];
-            int colNumber = crateInfo.getPosition()[COLUMN_INDEX];
-            commandLineBoard[rowNumber][colNumber] = crate();
-        }
-
-        for (DisplayFormat turtleInfo : controllerModel.getTurtleInfo()) {
-            int rowNumber = turtleInfo.getPosition()[ROW_INDEX];
-            int colNumber = turtleInfo.getPosition()[COLUMN_INDEX];
-            commandLineBoard[rowNumber][colNumber] = turtle(turtleInfo.getDirection(), turtleInfo.isActive());
-        }
-
-        for (DisplayFormat jewelInfo : controllerModel.getJewelInfo()) {
-            int rowNumber = jewelInfo.getPosition()[ROW_INDEX];
-            int colNumber = jewelInfo.getPosition()[COLUMN_INDEX];
-            commandLineBoard[rowNumber][colNumber] = jewel(jewelInfo.isActive());
-        }
-
-        for (DisplayFormat stoneWallInfo : controllerModel.getStoneWallInfo()) {
-            int rowNumber = stoneWallInfo.getPosition()[ROW_INDEX];
-            int colNumber = stoneWallInfo.getPosition()[COLUMN_INDEX];
-            commandLineBoard[rowNumber][colNumber] = stoneWall();
-        }
-
-        for (DisplayFormat iceWallInfo : controllerModel.getIceWallInfo()) {
-            int rowNumber = iceWallInfo.getPosition()[ROW_INDEX];
-            int colNumber = iceWallInfo.getPosition()[COLUMN_INDEX];
-            commandLineBoard[rowNumber][colNumber] = iceWall();
-        }
+    /**
+     * Prints the board in command line
+     */
+    private void printBoard() {
 
         for (int row = 0; row < commandLineBoard.length; row++) {
             for (int col = 0; col < commandLineBoard[row].length; col++) {
@@ -66,6 +41,42 @@ public class GameDisplay {
                     System.out.println();
                 }
             }
+        }
+    }
+
+    /**
+     * Populates the board with tiles
+     */
+    private void populateBoard() {
+        populateTile(controllerModel.getCrateInfo(), crate());
+        populateTile(controllerModel.getStoneWallInfo(), stoneWall());
+        populateTile(controllerModel.getPortalInfo(), portal());
+        populateTile(controllerModel.getIceWallInfo(), iceWall());
+        populateTurtle(controllerModel.getTurtleInfo());
+        populateJewel(controllerModel.getJewelInfo());
+    }
+
+    private void populateTile(ArrayList<DisplayFormat> tileInfo, String tileString) {
+        for (DisplayFormat tile : tileInfo) {
+            int row = tile.getPosition()[ROW_INDEX];
+            int col = tile.getPosition()[COLUMN_INDEX];
+            commandLineBoard[row][col] = tileString;
+        }
+    }
+
+    private void populateTurtle(ArrayList<DisplayFormat> turtleInfo) {
+        for (DisplayFormat turtle : turtleInfo) {
+            int row = turtle.getPosition()[ROW_INDEX];
+            int col = turtle.getPosition()[COLUMN_INDEX];
+            commandLineBoard[row][col] = turtle(turtle.getDirection(), turtle.isActive());
+        }
+    }
+
+    private void populateJewel(ArrayList<DisplayFormat> jewelInfo) {
+        for (DisplayFormat jewel : jewelInfo) {
+            int row = jewel.getPosition()[ROW_INDEX];
+            int col = jewel.getPosition()[COLUMN_INDEX];
+            commandLineBoard[row][col] = jewel(jewel.isActive());
         }
     }
 
@@ -100,7 +111,7 @@ public class GameDisplay {
     }
 
     private String portal() {
-        String portalString = " P ";
+        String portalString = " ⬬ ";
         return portalString;
     }
   
@@ -110,7 +121,7 @@ public class GameDisplay {
     }
 
     private String crate() {
-        String crateString = " C ";
+        String crateString = " □ ";
         return crateString;
     }
 
