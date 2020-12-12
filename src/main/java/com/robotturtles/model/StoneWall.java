@@ -8,11 +8,11 @@ public class StoneWall implements Movable {
 
     private Position position;
 
-    public StoneWall(Position position){
+    public StoneWall(){
         this.setPosition( generate_stone_wall() );
     }
 
-    public static Position generate_stone_wall(){
+    private static Position generate_stone_wall(){
         int row_number = generate_exclude(UPPERBOUND,LOWERBOUND);
         int col_number = generate_exclude(UPPERBOUND,LOWERBOUND);
 
@@ -20,7 +20,7 @@ public class StoneWall implements Movable {
         return position;
     }
 
-    public static int generate_exclude(int upperbound, int lowerbound){
+    private static int generate_exclude(int upperbound, int lowerbound){
         Random rand= new Random();
         int generate_num;
         do{

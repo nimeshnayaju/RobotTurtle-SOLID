@@ -16,6 +16,12 @@ public class GameDisplay {
     public void displayBoard() {
         String[][] commandLineBoard = new String[Board.NUM_OF_ROWS][Board.NUM_OF_COLS];
 
+        for (DisplayFormat portalInfo : controllerModel.getPortalInfo()) {
+            int rowNumber = portalInfo.getPosition()[ROW_INDEX];
+            int colNumber = portalInfo.getPosition()[COLUMN_INDEX];
+            commandLineBoard[rowNumber][colNumber] = portal();
+        }
+
         for (DisplayFormat turtleInfo : controllerModel.getTurtleInfo()) {
             int rowNumber = turtleInfo.getPosition()[ROW_INDEX];
             int colNumber = turtleInfo.getPosition()[COLUMN_INDEX];
@@ -78,6 +84,12 @@ public class GameDisplay {
     private String stoneWall() {
         String stoneWallString = " S ";
         return stoneWallString;
+    }
+
+
+    private String portal() {
+        String portalString = " P ";
+        return portalString;
     }
 
     public void displayCards() {

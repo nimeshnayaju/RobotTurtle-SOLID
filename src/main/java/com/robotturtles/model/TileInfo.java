@@ -5,6 +5,12 @@ public class TileInfo {
     private Direction direction;
     private boolean isActive;
 
+    public TileInfo(Position position) {
+        this.position = position;
+        this.direction = null;
+        this.isActive = true;
+    }
+
     public TileInfo(Position position, Direction direction, boolean active) {
         this.position = position;
         this.direction = direction;

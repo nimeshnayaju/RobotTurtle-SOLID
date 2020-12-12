@@ -24,6 +24,10 @@ public class ManipulateModel {
         return manipulateTileInfos(game.getAllStoneWallInfo());
     }
 
+    public ArrayList<DisplayFormat> getPortalInfo() {
+        return manipulateTileInfos(game.getAllPortalInfo());
+    }
+
     private ArrayList<DisplayFormat> manipulateTileInfos(ArrayList<TileInfo> infos) {
         ArrayList<DisplayFormat> manipulatedInfos = new ArrayList<>(game.getNumOfPlayers());
         for (TileInfo info : infos) {

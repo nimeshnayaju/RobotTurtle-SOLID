@@ -5,9 +5,11 @@ public class Board {
     public static final int NUM_OF_COLS = 8;
 
     private Movable[][] tiles;
+    private Portal[] portals;
 
     public Board() {
         tiles = new Movable[NUM_OF_ROWS][NUM_OF_COLS];
+        portals = new Portal[2];
     }
 
     public void setUpTile(Movable tile) {
@@ -34,6 +36,10 @@ public class Board {
         return isOccupied(position.getRowNumber(), position.getColNumber());
     }
 
+    private Movable getTile(Position position) {
+        return getTile(position.getRowNumber(), position.getColNumber());
+    }
+
     /**
      * Returns the Tile in the specified position
      * @param rowNumber row number
@@ -48,7 +54,25 @@ public class Board {
             return;
         }
         setPositionNull(oldPosition);
+        // If the turtle lands in one of the pairs of a Portal tile, teleport it to the position of the other tile
+        if (isPortalTile(destinationPosition)) {
+            destinationPosition = getPortalTile(destinationPosition).getOtherPair().getPosition();
+        }
         setNewPosition(destinationPosition, turtle);
+    }
+
+    private Portal getPortalTile(Position position) {
+        for (Portal portal : portals) {
+            if (position.equals(portal.getPosition())) return portal;
+        }
+        return null;
+    }
+
+    private boolean isPortalTile(Position position) {
+        for (Portal portal : portals) {
+            if (position.equals(portal.getPosition())) return true;
+        }
+        return false;
     }
 
     private void setPositionNull(Position position){
@@ -57,5 +81,11 @@ public class Board {
 
     private void setNewPosition(Position position, Turtle turtle){
         tiles[position.getRowNumber()][position.getColNumber()] = turtle;
+        turtle.setPosition(new Position(position.getRowNumber(), position.getColNumber()));
+    }
+
+    public void setUpPortal(Portal portal) {
+        portals[0] = portal;
+        portals[1] = portal.getOtherPair();
     }
 }
