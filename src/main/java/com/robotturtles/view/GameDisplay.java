@@ -40,6 +40,12 @@ public class GameDisplay {
             commandLineBoard[rowNumber][colNumber] = stoneWall();
         }
 
+        for (DisplayFormat iceWallInfo : controllerModel.getIceWallInfo()) {
+            int rowNumber = iceWallInfo.getPosition()[ROW_INDEX];
+            int colNumber = iceWallInfo.getPosition()[COLUMN_INDEX];
+            commandLineBoard[rowNumber][colNumber] = iceWall();
+        }
+
         for (int row = 0; row < commandLineBoard.length; row++) {
             for (int col = 0; col < commandLineBoard[row].length; col++) {
                 if (commandLineBoard[row][col] == null) {
@@ -86,14 +92,18 @@ public class GameDisplay {
         return stoneWallString;
     }
 
-
     private String portal() {
         String portalString = " P ";
         return portalString;
     }
+  
+    private String iceWall() {
+        String icWallString = " * ";
+        return icWallString;
+    }
 
     public void displayCards() {
-        System.out.println("Make your choice: [1] Forward; [2] Turn left; [3] Turn Right; [4] Bug");
+        System.out.println("Make your choice: [1] Forward; [2] Turn left; [3] Turn Right; [4] Bug; [5] Laser");
     }
 
     /**
