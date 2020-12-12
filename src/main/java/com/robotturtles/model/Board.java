@@ -58,7 +58,7 @@ public class Board {
         }
     }
 
-    private void setPositionNull(Position position){
+    public void setPositionNull(Position position){
         tiles[position.getRowNumber()][position.getColNumber()] = null;
     }
 
@@ -66,5 +66,4 @@ public class Board {
         tiles[position.getRowNumber()][position.getColNumber()] = turtle;
         turtle.setPosition(new Position(position.getRowNumber(), position.getColNumber()));
     }
-
 }

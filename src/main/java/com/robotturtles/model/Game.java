@@ -193,9 +193,9 @@ public class Game {
     public ArrayList<TileInfo> getAllIceWallInfo() {
         ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
         for (IceWall iceWall: iceWalls) {
-            Position position = iceWall.getPosition();
-            boolean active = true;
-            info.add(new TileInfo(position, null, active));
+            if (iceWall.getPosition() != null) {
+                info.add(new TileInfo(iceWall.getPosition()));
+            }
         }
         return info;
     }
@@ -213,21 +213,26 @@ public class Game {
         if (card == null) return false;
 
         Turtle currentPlayerTurtle = getCurrentPlayer().getTurtle();
-        Turtle clonedTurtle = copyTileContents(currentPlayerTurtle);
 
-        card.play(clonedTurtle);
-        // If the turtle position doesn't change, the card is valid
-        if (clonedTurtle.getPosition().equals(currentPlayerTurtle.getPosition())) return true;
+        // If the card is not a Laser card
+        if (!card.isLaserCard()) {
+            Turtle clonedTurtle = copyTileContents(currentPlayerTurtle);
+            card.play(clonedTurtle);
+            // If the turtle position doesn't change, the card is valid
+            if (clonedTurtle.getPosition().equals(currentPlayerTurtle.getPosition())) return true;
 
-        if (causesEscapingTheBoard(clonedTurtle.getPosition())) return false;
-        // Check if the turtle pushes the crate (if any) in front out of the board
-        if (isCrate(clonedTurtle.getPosition())) {
-            Position cratePotentialPosition = determineCratePotentialPosition(clonedTurtle.getPosition(), clonedTurtle.getDirection());
-            if (causesEscapingTheBoard(cratePotentialPosition) || board.isOccupied(cratePotentialPosition)) return false;
+            if (causesEscapingTheBoard(clonedTurtle.getPosition())) return false;
+            // Check if the turtle pushes the crate (if any) in front out of the board
+            if (isCrate(clonedTurtle.getPosition())) {
+                Position cratePotentialPosition = determineCratePotentialPosition(clonedTurtle.getPosition(), clonedTurtle.getDirection());
+                if (causesEscapingTheBoard(cratePotentialPosition) || board.isOccupied(cratePotentialPosition)) return false;
+            }
+            // Check if there is a collision with another tile (except own jewel, Portal or Crate)
+            if (causesCollision(clonedTurtle.getPosition())) return false;
+        } else {
+            IceWall iceWall = getIceWall(currentPlayerTurtle.getPosition(), currentPlayerTurtle.getDirection());
+            return iceWall != null;
         }
-        // Check if there is a collision with another tile (except own jewel, Portal or Crate)
-        if (causesCollision(clonedTurtle.getPosition())) return false;
-
         return true;
     }
 
@@ -283,15 +288,31 @@ public class Game {
     public void makeMove(Card card) {
         Player currentPlayer = getCurrentPlayer();
         Position oldPosition = currentPlayer.getTurtle().getPosition();
-        card.play(getCurrentPlayer().getTurtle());
+        Direction oldDirection = currentPlayer.getTurtle().getDirection();
 
-        Position destinationPosition = currentPlayer.getTurtle().getPosition();
+        if (!card.isLaserCard()) {
+            card.play(getCurrentPlayer().getTurtle());
 
-        if (isPortal(destinationPosition) && !oldPosition.equals(destinationPosition)) {
-        // If the turtle lands in one of the pairs of a Portal tile, teleport it to the position of the other tile
-            destinationPosition = getOtherPortalTile(destinationPosition);
+            Position destinationPosition = currentPlayer.getTurtle().getPosition();
+
+            if (isPortal(destinationPosition) && !oldPosition.equals(destinationPosition)) {
+                // If the turtle lands in one of the pairs of a Portal tile, teleport it to the position of the other tile
+                destinationPosition = getOtherPortalTile(destinationPosition);
+            }
+            board.makeMove(oldPosition, destinationPosition, crateIfAny(destinationPosition), currentPlayer.getTurtle());
+        } else {
+            IceWall iceWall = getIceWall(oldPosition, oldDirection);
+            board.setPositionNull(iceWall.getPosition());
+            card.play(iceWall);
         }
-        board.makeMove(oldPosition, destinationPosition, crateIfAny(destinationPosition), currentPlayer.getTurtle());
+    }
+
+    private IceWall getIceWall(Position turtlePosition, Direction turtleDirection) {
+        Position iceWallPosition = ForwardMove.determinePosition(turtleDirection, turtlePosition);
+        for (IceWall iceWall : iceWalls) {
+            if (iceWallPosition.equals(iceWall.getPosition())) return iceWall;
+        }
+        return null;
     }
 
     private Crate crateIfAny(Position position) {
