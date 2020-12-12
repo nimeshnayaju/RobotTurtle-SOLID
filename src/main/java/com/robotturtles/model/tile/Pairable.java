@@ -1,4 +1,4 @@
-package com.robotturtles.model;
+package com.robotturtles.model.tile;
 
 public interface Pairable {
     public Portal getOtherPair();

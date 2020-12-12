@@ -1,6 +1,8 @@
-package com.robotturtles.model;
+package com.robotturtles.model.game;
 
-import static com.robotturtles.model.Board.*;
+import com.robotturtles.model.tile.*;
+
+import static com.robotturtles.model.game.Board.*;
 
 public class Player {
 
@@ -9,7 +11,7 @@ public class Player {
     private String playerName;
     private int playerId;
     private Turtle turtle;
-    private Movable jewel;
+    private Placeable jewel;
 
 
     public Player(String playerName, int playerId) {
@@ -54,7 +56,7 @@ public class Player {
         return playerName;
     }
 
-    public Movable getJewel() {
+    public Placeable getJewel() {
         return this.jewel;
     }
 

@@ -1,4 +1,7 @@
-package com.robotturtles.model;
+package com.robotturtles.model.card;
+
+import com.robotturtles.model.tile.IceWall;
+import com.robotturtles.model.tile.Turtle;
 
 public class Card {
     private IMove associatedMove; // Move associated with the Card

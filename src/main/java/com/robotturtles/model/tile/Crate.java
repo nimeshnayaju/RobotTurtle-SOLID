@@ -1,6 +1,6 @@
-package com.robotturtles.model;
+package com.robotturtles.model.tile;
 
-public class Crate implements Movable, Turnable {
+public class Crate implements Placeable, Turnable {
 
     private Position position;
     private Direction direction;

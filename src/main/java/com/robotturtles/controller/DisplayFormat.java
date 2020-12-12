@@ -1,6 +1,6 @@
 package com.robotturtles.controller;
 
-import com.robotturtles.model.Direction;
+import com.robotturtles.model.tile.Direction;
 
 public class DisplayFormat {
     private int[] position;

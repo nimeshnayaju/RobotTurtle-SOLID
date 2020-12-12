@@ -1,43 +1,43 @@
 package com.robotturtles.controller;
 
-import com.robotturtles.model.Game;
-import com.robotturtles.model.TileInfo;
+import com.robotturtles.model.game.GameBoardInfo;
+import com.robotturtles.model.tile.TileInfo;
 
 import java.util.ArrayList;
 
 public class ManipulateModel {
-    private Game game;
+    private GameBoardInfo gameInfo;
 
-    public ManipulateModel(Game game) {
-        this.game = game;
+    public ManipulateModel(GameBoardInfo gameInfo) {
+        this.gameInfo = gameInfo;
     }
 
     public ArrayList<DisplayFormat> getTurtleInfo() {
-        return manipulateTileInfos(game.getAllTurtlesInfo());
+        return manipulateTileInfos(gameInfo.getAllTurtlesInfo());
     }
 
     public ArrayList<DisplayFormat> getJewelInfo() {
-        return manipulateTileInfos(game.getAllJewelInfo());
+        return manipulateTileInfos(gameInfo.getAllJewelInfo());
     }
 
     public ArrayList<DisplayFormat> getStoneWallInfo() {
-        return manipulateTileInfos(game.getAllStoneWallInfo());
+        return manipulateTileInfos(gameInfo.getAllStoneWallInfo());
     }
 
     public ArrayList<DisplayFormat> getPortalInfo() {
-        return manipulateTileInfos(game.getAllPortalInfo());
+        return manipulateTileInfos(gameInfo.getAllPortalInfo());
     }
 
     public ArrayList<DisplayFormat> getCrateInfo() {
-        return manipulateTileInfos(game.getAllCrateInfo());
+        return manipulateTileInfos(gameInfo.getAllCrateInfo());
     }
   
     public ArrayList<DisplayFormat> getIceWallInfo() {
-        return manipulateTileInfos(game.getAllIceWallInfo());
+        return manipulateTileInfos(gameInfo.getAllIceWallInfo());
     }
 
     private ArrayList<DisplayFormat> manipulateTileInfos(ArrayList<TileInfo> infos) {
-        ArrayList<DisplayFormat> manipulatedInfos = new ArrayList<>(game.getNumOfPlayers());
+        ArrayList<DisplayFormat> manipulatedInfos = new ArrayList<>(gameInfo.getNumOfPlayers());
         for (TileInfo info : infos) {
             manipulatedInfos.add(manipulateInfo(info));
         }

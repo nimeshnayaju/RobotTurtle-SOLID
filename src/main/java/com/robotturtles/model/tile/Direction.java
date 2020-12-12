@@ -1,4 +1,4 @@
-package com.robotturtles.model;
+package com.robotturtles.model.tile;
 
 public enum Direction {
     NORTH,

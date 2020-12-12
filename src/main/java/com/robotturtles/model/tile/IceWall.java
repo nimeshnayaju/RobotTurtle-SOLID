@@ -1,11 +1,9 @@
-package com.robotturtles.model;
+package com.robotturtles.model.tile;
 
-import java.util.Random;
-
-public class StoneWall implements Movable {
+public class IceWall implements Placeable {
     private Position position;
 
-    public StoneWall(Position position){
+    public IceWall(Position position) {
         this.position = position;
     }
 

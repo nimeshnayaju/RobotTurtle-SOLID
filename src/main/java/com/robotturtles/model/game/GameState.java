@@ -1,4 +1,4 @@
-package com.robotturtles.model;
+package com.robotturtles.model.game;
 
 public enum GameState {
     IN_PROGRESS,

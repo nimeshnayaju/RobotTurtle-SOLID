@@ -1,20 +1,26 @@
-package com.robotturtles.model;
+package com.robotturtles.model.game;
+
+import com.robotturtles.model.card.Forward;
+import com.robotturtles.model.tile.Crate;
+import com.robotturtles.model.tile.Placeable;
+import com.robotturtles.model.tile.Position;
+import com.robotturtles.model.tile.Turtle;
 
 public class Board {
     public static final int NUM_OF_ROWS = 8;
     public static final int NUM_OF_COLS = 8;
 
-    private Movable[][] tiles;
+    private Placeable[][] tiles;
 
     public Board() {
-        tiles = new Movable[NUM_OF_ROWS][NUM_OF_COLS];
+        tiles = new Placeable[NUM_OF_ROWS][NUM_OF_COLS];
     }
 
-    public void setUpTile(Movable tile) {
+    public void setUpTile(Placeable tile) {
         addTileToPosition(tile, tile.getPosition());
     }
 
-    private void addTileToPosition(Movable tile, Position position) {
+    private void addTileToPosition(Placeable tile, Position position) {
         int rowNumber = position.getRowNumber();
         int colNumber = position.getColNumber();
         this.tiles[rowNumber][colNumber] = tile;
@@ -34,7 +40,7 @@ public class Board {
         return isOccupied(position.getRowNumber(), position.getColNumber());
     }
 
-    private Movable getTile(Position position) {
+    private Placeable getTile(Position position) {
         return getTile(position.getRowNumber(), position.getColNumber());
     }
 
@@ -43,7 +49,7 @@ public class Board {
      * @param rowNumber row number
      * @param colNumber column number
      */
-    public Movable getTile(int rowNumber, int colNumber) {
+    public Placeable getTile(int rowNumber, int colNumber) {
         return tiles[rowNumber][colNumber];
     }
 
@@ -54,7 +60,7 @@ public class Board {
         setPositionNull(oldPosition);
         setNewPosition(destinationPosition, turtle);
         if (crate != null) {
-            crate.setPosition(ForwardMove.determinePosition(turtle.getDirection(), crate.getPosition()));
+            crate.setPosition(Forward.determinePosition(turtle.getDirection(), crate.getPosition()));
         }
     }
 
