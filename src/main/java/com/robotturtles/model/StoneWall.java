@@ -25,7 +25,7 @@ public class StoneWall implements Movable {
         int generate_num;
         do{
             generate_num = rand.nextInt((upperbound - lowerbound) + 1) + lowerbound;
-        }while(generate_num == 3 || generate_num == 4);
+        } while(generate_num == 3 || generate_num == 4 || generate_num == 1); // stonewalls should not overlap jewels or other tiles
         return generate_num;
     }
 

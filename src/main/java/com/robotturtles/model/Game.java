@@ -6,11 +6,10 @@ import java.util.Stack;
 
 public class Game {
     private static final int INITIAL_TURN = 0;
-    private static final int INITIAL_POSITION = 0;
     private static final int PORTAL_ONE_ROW = 1;
     private static final int PORTAL_ONE_COL = 2;
     private static final int PORTAL_TWO_ROW = 4;
-    private static final int PORTAL_TWO_COL = 4;
+    private static final int PORTAL_TWO_COL = 5;
     private static final int NUM_OF_STONEWALLS = 2;
     private static final int NUM_OF_INDIVIDUAL_PORTAL = 2;
 
