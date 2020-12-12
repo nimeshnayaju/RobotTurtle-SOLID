@@ -20,7 +20,7 @@ public class Game {
     private GameState gameState;
     private ArrayList<StoneWall> stoneWalls;
     private Portal portalPair;
-    private ArrayList<IceWall> iceWallLst;
+    private ArrayList<IceWall> iceWalls;
 
     public Game(int numOfPlayers) {
         setNumOfPlayers(numOfPlayers);
@@ -29,6 +29,7 @@ public class Game {
         this.players = new HashMap<>();
         this.gameState = GameState.IN_PROGRESS;
         this.stoneWalls = generateAllStoneWall();
+        this.iceWalls = this.generateAllIceWall();
         this.portalPair = generatePortal();
     }
 
@@ -72,13 +73,13 @@ public class Game {
     }
 
     public ArrayList<IceWall> getIceWallLst() {
-        return iceWallLst;
+        return iceWalls;
     }
 
     private ArrayList<IceWall> generateAllIceWall(){
         ArrayList<IceWall> icewalls = new ArrayList<IceWall>();
         for (int i = 0; i < numOfPlayers; i++) {
-            IceWall stonewall = new IceWall(new Position(INITIAL_POSITION,INITIAL_POSITION));
+            IceWall stonewall = new IceWall();
             icewalls.add((stonewall));
         }
         return icewalls;
@@ -162,7 +163,7 @@ public class Game {
 
     public ArrayList<TileInfo> getAllIceWallInfo() {
         ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
-        for (IceWall iceWall: iceWallLst) {
+        for (IceWall iceWall: iceWalls) {
             Position position = iceWall.getPosition();
             boolean active = true;
             info.add(new TileInfo(position, null, active));

@@ -20,7 +20,7 @@ public class StoneWall implements Movable {
         return position;
     }
 
-    private static int generate_exclude(int upperbound, int lowerbound){
+    public static int generate_exclude(int upperbound, int lowerbound){
         Random rand= new Random();
         int generate_num;
         do{
