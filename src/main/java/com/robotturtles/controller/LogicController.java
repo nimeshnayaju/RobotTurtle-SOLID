@@ -40,7 +40,7 @@ public class LogicController {
                 card = new Card(new Bug());
                 break;
             case LASER_CARD:
-                card = new Card(new Laser(game));
+                card = new Card(new Laser());
                 break;
             default:
                 card = null;

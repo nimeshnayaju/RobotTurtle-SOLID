@@ -5,11 +5,9 @@ public class Board {
     public static final int NUM_OF_COLS = 8;
 
     private Movable[][] tiles;
-    private Portal[] portals;
 
     public Board() {
         tiles = new Movable[NUM_OF_ROWS][NUM_OF_COLS];
-        portals = new Portal[2];
     }
 
     public void setUpTile(Movable tile) {
@@ -49,43 +47,23 @@ public class Board {
         return tiles[rowNumber][colNumber];
     }
 
-    public void makeMove(Position oldPosition, Position destinationPosition, Turtle turtle){
+    public void makeMove(Position oldPosition, Position destinationPosition, Crate crate, Turtle turtle){
         if(oldPosition.equals(destinationPosition)){
             return;
         }
         setPositionNull(oldPosition);
-        // If the turtle lands in one of the pairs of a Portal tile, teleport it to the position of the other tile
-        if (isPortalTile(destinationPosition)) {
-            destinationPosition = getPortalTile(destinationPosition).getOtherPair().getPosition();
-        }
         setNewPosition(destinationPosition, turtle);
-    }
-
-    private Portal getPortalTile(Position position) {
-        for (Portal portal : portals) {
-            if (position.equals(portal.getPosition())) return portal;
+        if (crate != null) {
+            crate.setPosition(ForwardMove.determinePosition(turtle.getDirection(), crate.getPosition()));
         }
-        return null;
     }
 
-    private boolean isPortalTile(Position position) {
-        for (Portal portal : portals) {
-            if (position.equals(portal.getPosition())) return true;
-        }
-        return false;
-    }
-
-    private void setPositionNull(Position position){
+    public void setPositionNull(Position position){
         tiles[position.getRowNumber()][position.getColNumber()] = null;
     }
 
     private void setNewPosition(Position position, Turtle turtle){
         tiles[position.getRowNumber()][position.getColNumber()] = turtle;
         turtle.setPosition(new Position(position.getRowNumber(), position.getColNumber()));
-    }
-
-    public void setUpPortal(Portal portal) {
-        portals[0] = portal;
-        portals[1] = portal.getOtherPair();
     }
 }

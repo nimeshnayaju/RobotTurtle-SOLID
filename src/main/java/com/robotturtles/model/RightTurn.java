@@ -1,6 +1,6 @@
 package com.robotturtles.model;
 
-public class RightTurn implements IMove{
+public class RightTurn implements IMove {
 	@Override
     public void execute(Turtle tile) {
         Direction currDirection = tile.getDirection();

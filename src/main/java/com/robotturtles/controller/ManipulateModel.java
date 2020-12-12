@@ -27,6 +27,10 @@ public class ManipulateModel {
     public ArrayList<DisplayFormat> getPortalInfo() {
         return manipulateTileInfos(game.getAllPortalInfo());
     }
+
+    public ArrayList<DisplayFormat> getCrateInfo() {
+        return manipulateTileInfos(game.getAllCrateInfo());
+    }
   
     public ArrayList<DisplayFormat> getIceWallInfo() {
         return manipulateTileInfos(game.getAllIceWallInfo());

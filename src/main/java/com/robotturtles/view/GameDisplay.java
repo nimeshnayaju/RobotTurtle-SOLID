@@ -22,6 +22,12 @@ public class GameDisplay {
             commandLineBoard[rowNumber][colNumber] = portal();
         }
 
+        for (DisplayFormat crateInfo : controllerModel.getCrateInfo()) {
+            int rowNumber = crateInfo.getPosition()[ROW_INDEX];
+            int colNumber = crateInfo.getPosition()[COLUMN_INDEX];
+            commandLineBoard[rowNumber][colNumber] = crate();
+        }
+
         for (DisplayFormat turtleInfo : controllerModel.getTurtleInfo()) {
             int rowNumber = turtleInfo.getPosition()[ROW_INDEX];
             int colNumber = turtleInfo.getPosition()[COLUMN_INDEX];
@@ -98,8 +104,13 @@ public class GameDisplay {
     }
   
     private String iceWall() {
-        String icWallString = " * ";
-        return icWallString;
+        String iceWallString = " * ";
+        return iceWallString;
+    }
+
+    private String crate() {
+        String crateString = " C ";
+        return crateString;
     }
 
     public void displayCards() {
