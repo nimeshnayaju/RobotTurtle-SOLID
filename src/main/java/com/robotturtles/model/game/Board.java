@@ -40,19 +40,6 @@ public class Board {
         return isOccupied(position.getRowNumber(), position.getColNumber());
     }
 
-    private Placeable getTile(Position position) {
-        return getTile(position.getRowNumber(), position.getColNumber());
-    }
-
-    /**
-     * Returns the Tile in the specified position
-     * @param rowNumber row number
-     * @param colNumber column number
-     */
-    public Placeable getTile(int rowNumber, int colNumber) {
-        return tiles[rowNumber][colNumber];
-    }
-
     public void makeMove(Position oldPosition, Position destinationPosition, Crate crate, Turtle turtle){
         if(oldPosition.equals(destinationPosition)){
             return;

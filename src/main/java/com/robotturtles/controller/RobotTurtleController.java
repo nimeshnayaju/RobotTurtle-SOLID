@@ -150,8 +150,10 @@ public class RobotTurtleController {
      * Updates the game state after each move
      */
     private void updateGameState() {
+        int turn = robotTurtleGame.getTurn();
+        String playerName = robotTurtleGame.getCurrentPlayerName();
         if (gameManipulate.checkForPlayerWin()) {
-            gameDisplay.displayMessage("Player " + (robotTurtleGame.getTurn() + 1) + " (" + robotTurtleGame.getCurrentPlayerName() + ")" + " has successfully completed the game!\n");
+            gameDisplay.displayMessage("Player " + (turn + 1) + " (" + playerName + ")" + " has successfully completed the game!\n");
         }
         if (!gameManipulate.checkForGameCompletion()) {
             gameManipulate.assignTurnToNextPlayer();

@@ -27,7 +27,6 @@ public class GameDisplay {
      * Prints the board in command line
      */
     private void printBoard() {
-
         for (int row = 0; row < commandLineBoard.length; row++) {
             for (int col = 0; col < commandLineBoard[row].length; col++) {
                 if (commandLineBoard[row][col] == null) {
