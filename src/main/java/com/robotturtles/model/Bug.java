@@ -5,7 +5,7 @@ import java.util.Stack;
 public class Bug implements IMove {
 
     @Override
-    public void execute(MovableTile tile) {
+    public void execute(Turtle tile) {
         Stack<Position> positionsVisited = tile.getPositionsVisited();
         Stack<Direction> directionsFaced = tile.getDirectionsFaced();
 

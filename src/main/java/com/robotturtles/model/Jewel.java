@@ -1,7 +1,22 @@
 package com.robotturtles.model;
 
-public class Jewel extends BasicTile {
+import java.util.Stack;
+
+public class Jewel implements Movable {
+
+    private Position position;
+    private Stack<Position> positionsVisited;
     public Jewel(Position position) {
-        super(position);
+        this.position = position;
+    }
+
+    @Override
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    @Override
+    public Position getPosition() {
+        return this.position;
     }
 }

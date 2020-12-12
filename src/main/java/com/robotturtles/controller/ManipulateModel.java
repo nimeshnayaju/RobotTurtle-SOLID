@@ -1,7 +1,6 @@
 package com.robotturtles.controller;
 
 import com.robotturtles.model.Game;
-import com.robotturtles.model.Position;
 import com.robotturtles.model.TileInfo;
 
 import java.util.ArrayList;
@@ -25,6 +24,10 @@ public class ManipulateModel {
         return manipulateTileInfos(game.getAllStoneWallInfo());
     }
 
+    public ArrayList<DisplayFormat> getPortalInfo() {
+        return manipulateTileInfos(game.getAllPortalInfo());
+    }
+  
     public ArrayList<DisplayFormat> getIceWallInfo() {
         return manipulateTileInfos(game.getAllIceWallInfo());
     }

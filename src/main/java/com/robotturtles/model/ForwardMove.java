@@ -2,7 +2,7 @@ package com.robotturtles.model;
 
 public class ForwardMove implements IMove {
     @Override
-    public void execute(MovableTile tile) {
+    public void execute(Turtle tile) {
         // Get the current position and direction of the tile
         Position currPosition = tile.getPosition();
         Direction currDirection = tile.getDirection();

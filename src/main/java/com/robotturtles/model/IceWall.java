@@ -2,12 +2,15 @@ package com.robotturtles.model;
 
 import java.util.Random;
 
-public class IceWall extends BasicTile{
+import static com.robotturtles.model.StoneWall.generate_exclude;
+
+public class IceWall implements Movable {
     public static final int UPPERBOUND = 5;
     public static final int LOWERBOUND = 1;
 
-    public IceWall(Position position){
-        super(position);
+    private Position position;
+
+    public IceWall(){
         this.setPosition( generate_IceWall() );
     }
 
@@ -19,12 +22,13 @@ public class IceWall extends BasicTile{
         return position;
     }
 
-    public static int generate_exclude(int upperbound, int lowerbound){
-        Random rand= new Random();
-        int generate_num;
-        do{
-            generate_num = rand.nextInt((upperbound - lowerbound) + 1) + lowerbound;
-        }while(generate_num == 3 || generate_num == 4);
-        return generate_num;
+    @Override
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    @Override
+    public Position getPosition() {
+        return this.position;
     }
 }

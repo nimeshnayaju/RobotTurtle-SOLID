@@ -2,7 +2,7 @@ package com.robotturtles.model;
 
 public class LeftTurn implements IMove {
     @Override
-    public void execute(MovableTile tile) {
+    public void execute(Turtle tile) {
         Direction currDirection = tile.getDirection();
 
         tile.addToDirectionsFaced(currDirection);

@@ -1,5 +1,6 @@
 package com.robotturtles.model;
 import java.util.ArrayList;
+
 public class Laser implements IMove {
     private Game game;
 
@@ -7,7 +8,7 @@ public class Laser implements IMove {
         this.game = game;
     }
     @Override
-    public void execute(MovableTile tile){
+    public void execute(Turtle tile){
         Position iceWallPosition = getIceWallPosition(tile);
         ArrayList<IceWall> iceWallList = game.getIceWallLst();
 
@@ -20,9 +21,7 @@ public class Laser implements IMove {
         iceWallList.remove(tobeRemoved);
     }
 
-
-
-    private Position getIceWallPosition(MovableTile tile){
+    private Position getIceWallPosition(Turtle tile){
         Direction currDirection = tile.getDirection();
         Position currPosition = tile.getPosition();
 
