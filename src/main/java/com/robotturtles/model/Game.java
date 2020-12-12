@@ -1,8 +1,9 @@
 package com.robotturtles.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
+import javax.management.loading.ClassLoaderRepository;
+import java.util.*;
+
+import static com.robotturtles.model.Board.NUM_OF_ROWS;
 
 public class Game {
     private static final int INITIAL_TURN = 0;
@@ -10,7 +11,6 @@ public class Game {
     private static final int PORTAL_ONE_COL = 2;
     private static final int PORTAL_TWO_ROW = 4;
     private static final int PORTAL_TWO_COL = 5;
-    private static final int NUM_OF_STONEWALLS = 2;
     private static final int NUM_OF_INDIVIDUAL_PORTAL = 2;
 
     private int numOfPlayers;
@@ -18,9 +18,10 @@ public class Game {
     private int turn;
     private HashMap<Integer, Player> players;
     private GameState gameState;
-    private ArrayList<StoneWall> stoneWalls;
+    private List<StoneWall> stoneWalls;
     private Portal portalPair;
-    private ArrayList<IceWall> iceWalls;
+    private List<IceWall> iceWalls;
+    private List<Crate> crates;
 
     public Game(int numOfPlayers) {
         setNumOfPlayers(numOfPlayers);
@@ -28,9 +29,33 @@ public class Game {
         this.turn = INITIAL_TURN;
         this.players = new HashMap<>();
         this.gameState = GameState.IN_PROGRESS;
-        this.stoneWalls = generateAllStoneWall();
-        this.iceWalls = this.generateAllIceWall();
         this.portalPair = generatePortal();
+        this.stoneWalls = generateStoneWalls();
+        this.iceWalls = this.generateIceWalls();
+        this.crates = generateCrates();
+    }
+
+    private List<Crate> generateCrates() {
+        List<Crate> crates = new ArrayList<>(numOfPlayers);
+        for (int i = 0; i < numOfPlayers; i++) {
+            Position uniquePosition = generateUniquePosition();
+            Crate newCrate = new Crate(uniquePosition);
+            crates.add(newCrate);
+            board.setUpTile(newCrate);
+        }
+        return crates;
+    }
+
+    private Position generateUniquePosition() {
+        Position uniquePosition;
+        Random rand = new Random();
+        do {
+            int row = rand.nextInt(NUM_OF_ROWS-1)+1;
+            int col = rand.nextInt(NUM_OF_ROWS-1)+1;
+            uniquePosition = new Position(row, col);
+        } while (board.isOccupied(uniquePosition));
+
+        return uniquePosition;
     }
 
     /**
@@ -43,7 +68,8 @@ public class Game {
         Portal portalOne = new Portal(portalOnePosition);
         Portal portalTwo = new Portal(portalTwoPosition, portalOne);
         portalOne.setOtherPair(portalTwo);
-        this.board.setUpPortal(portalTwo);
+        this.board.setUpTile(portalOne);
+        this.board.setUpTile(portalTwo);
         return portalTwo;
     }
 
@@ -58,31 +84,34 @@ public class Game {
         }
     }
 
-    public ArrayList<StoneWall> getStoneWalls() {
+    public List<StoneWall> getStoneWalls() {
         return stoneWalls;
     }
 
-    private ArrayList<StoneWall> generateAllStoneWall(){
-        ArrayList<StoneWall> stonewalls = new ArrayList<>();
+    private List<StoneWall> generateStoneWalls(){
+        List<StoneWall> stoneWalls = new ArrayList<>(numOfPlayers);
         for (int i = 0; i < numOfPlayers; i++) {
-            StoneWall stonewall = new StoneWall();
-            stonewalls.add(stonewall);
-            this.board.setUpTile(stonewall);
+            Position uniquePosition = generateUniquePosition();
+            StoneWall newStoneWall = new StoneWall(uniquePosition);
+            stoneWalls.add(newStoneWall);
+            board.setUpTile(newStoneWall);
         }
-        return stonewalls;
+        return stoneWalls;
     }
 
-    public ArrayList<IceWall> getIceWallLst() {
+    public List<IceWall> getIceWallLst() {
         return iceWalls;
     }
 
-    private ArrayList<IceWall> generateAllIceWall(){
-        ArrayList<IceWall> icewalls = new ArrayList<IceWall>();
+    private List<IceWall> generateIceWalls(){
+        List<IceWall> iceWalls = new ArrayList<>(numOfPlayers);
         for (int i = 0; i < numOfPlayers; i++) {
-            IceWall stonewall = new IceWall();
-            icewalls.add((stonewall));
+            Position uniquePosition = generateUniquePosition();
+            IceWall newIceWall = new IceWall(uniquePosition);
+            iceWalls.add(newIceWall);
+            board.setUpTile(newIceWall);
         }
-        return icewalls;
+        return iceWalls;
     }
 
     public int getNumOfPlayers() {
@@ -191,10 +220,19 @@ public class Game {
         if (clonedTurtle.getPosition().equals(currentPlayerTurtle.getPosition())) return true;
 
         if (causesEscapingTheBoard(clonedTurtle.getPosition())) return false;
+        // Check if the turtle pushes the crate (if any) in front out of the board
+        if (isCrate(clonedTurtle.getPosition())) {
+            Position cratePotentialPosition = determineCratePotentialPosition(clonedTurtle.getPosition(), clonedTurtle.getDirection());
+            if (causesEscapingTheBoard(cratePotentialPosition) || board.isOccupied(cratePotentialPosition)) return false;
+        }
+        // Check if there is a collision with another tile (except own jewel, Portal or Crate)
         if (causesCollision(clonedTurtle.getPosition())) return false;
-        if (causesCollisionIceWall(clonedTurtle.getPosition())) return false;
 
         return true;
+    }
+
+    private Position determineCratePotentialPosition(Position position, Direction direction) {
+        return ForwardMove.determinePosition(direction, position);
     }
 
     private Turtle copyTileContents(Turtle tile) {
@@ -212,31 +250,31 @@ public class Game {
     }
 
     private boolean causesCollision(Position position) {
-        if (this.board.isOccupied(position) && !position.equals(getCurrentPlayer().getJewel().getPosition())) {
+        if (this.board.isOccupied(position) && !isJewel(position) && !isPortal(position) && !isCrate(position)) {
             return true;
         }
         return false;
     }
 
+    private boolean isJewel(Position position) {
+        if (position.equals(getCurrentPlayer().getJewel().getPosition())) return true;
+        return false;
+    }
 
-    private boolean causesCollisionIceWall(Position position) {
-        if ( !collisionWithAnyIceWall(position) ) {
-            return true;
+    private boolean isCrate(Position position) {
+        for (Crate crate : crates) {
+            if (position.equals(crate.getPosition())) return true;
         }
         return false;
     }
 
-    private boolean collisionWithAnyIceWall(Position position){
-        for (IceWall icewall: getIceWallLst()) {
-            if(position.equals(icewall.getPosition())){
-                return false;
-            }
-        }
-        return true;
+    private boolean isPortal(Position position) {
+        if (position.equals(portalPair.getPosition()) || position.equals(portalPair.getOtherPair().getPosition())) return true;
+        return false;
     }
 
     private boolean causesEscapingTheBoard(Position position) {
-        if (position.getRowNumber() >= Board.NUM_OF_ROWS || position.getRowNumber() < 0 || position.getColNumber() >= Board.NUM_OF_COLS || position.getColNumber() <0) {
+        if (position.getRowNumber() >= NUM_OF_ROWS || position.getRowNumber() < 0 || position.getColNumber() >= Board.NUM_OF_COLS || position.getColNumber() <0) {
             return true;
         }
         return false;
@@ -246,7 +284,30 @@ public class Game {
         Player currentPlayer = getCurrentPlayer();
         Position oldPosition = currentPlayer.getTurtle().getPosition();
         card.play(getCurrentPlayer().getTurtle());
-        board.makeMove(oldPosition, currentPlayer.getTurtle().getPosition(), currentPlayer.getTurtle());
+
+        Position destinationPosition = currentPlayer.getTurtle().getPosition();
+
+        if (isPortal(destinationPosition) && !oldPosition.equals(destinationPosition)) {
+        // If the turtle lands in one of the pairs of a Portal tile, teleport it to the position of the other tile
+            destinationPosition = getOtherPortalTile(destinationPosition);
+        }
+        board.makeMove(oldPosition, destinationPosition, crateIfAny(destinationPosition), currentPlayer.getTurtle());
+    }
+
+    private Crate crateIfAny(Position position) {
+        for (Crate crate : crates) {
+            if (position.equals(crate.getPosition())) return crate;
+        }
+        return null;
+    }
+
+    private Position getOtherPortalTile(Position position) {
+        if (position.equals(portalPair.getPosition())) {
+            return portalPair.getOtherPair().getPosition();
+        } else if (position.equals(portalPair.getOtherPair().getPosition())) {
+            return portalPair.getPosition();
+        }
+        return null;
     }
 
     /**
@@ -290,7 +351,7 @@ public class Game {
 
 
     public ArrayList<TileInfo> getAllStoneWallInfo() {
-        ArrayList<TileInfo> info = new ArrayList<>(NUM_OF_STONEWALLS);
+        ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
         for (StoneWall stoneWall: stoneWalls) {
             Position position = stoneWall.getPosition();
             info.add(new TileInfo(position));
@@ -302,6 +363,15 @@ public class Game {
         ArrayList<TileInfo> info = new ArrayList<>(NUM_OF_INDIVIDUAL_PORTAL);
         info.add(new TileInfo(portalPair.getPosition()));
         info.add(new TileInfo(portalPair.getOtherPair().getPosition()));
+        return info;
+    }
+
+    public ArrayList<TileInfo> getAllCrateInfo() {
+        ArrayList<TileInfo> info = new ArrayList<>(numOfPlayers);
+        for (Crate crate : crates) {
+            Position position = crate.getPosition();
+            info.add(new TileInfo(position));
+        }
         return info;
     }
 }

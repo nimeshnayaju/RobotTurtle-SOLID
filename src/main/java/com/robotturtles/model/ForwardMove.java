@@ -10,12 +10,27 @@ public class ForwardMove implements IMove {
         tile.addToDirectionsFaced(currDirection);
         tile.addToPositionsVisited(currPosition);
 
-        int rowNumber = currPosition.getRowNumber();
-        int colNumber = currPosition.getColNumber();
+        Position newPosition = determinePosition(currDirection, currPosition);
+
+        tile.setPosition(newPosition);
+    }
+
+    public void execute(Crate tile) {
+        // Get the current position and direction of the tile
+        Position currPosition = tile.getPosition();
+        Direction currDirection = tile.getDirection();
+
+        Position newPosition = determinePosition(currDirection, currPosition);
+        tile.setPosition(newPosition);
+    }
+
+    public static Position determinePosition(Direction direction, Position position) {
+        int rowNumber = position.getRowNumber();
+        int colNumber = position.getColNumber();
 
         Position newPosition;
 
-        switch (currDirection) {
+        switch (direction) {
             case NORTH:
                 newPosition = new Position(rowNumber-1, colNumber);
                 break;
@@ -31,7 +46,6 @@ public class ForwardMove implements IMove {
             default:
                 newPosition = null;
         }
-
-        tile.setPosition(newPosition);
+        return newPosition;
     }
 }

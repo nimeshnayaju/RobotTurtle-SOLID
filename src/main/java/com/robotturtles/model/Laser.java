@@ -1,5 +1,6 @@
 package com.robotturtles.model;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Laser implements IMove {
     private Game game;
@@ -10,7 +11,7 @@ public class Laser implements IMove {
     @Override
     public void execute(Turtle tile){
         Position iceWallPosition = getIceWallPosition(tile);
-        ArrayList<IceWall> iceWallList = game.getIceWallLst();
+        List<IceWall> iceWallList = game.getIceWallLst();
 
         IceWall tobeRemoved = null;
         for (IceWall icewall: iceWallList) {
