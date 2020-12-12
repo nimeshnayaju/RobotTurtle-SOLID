@@ -1,6 +1,10 @@
-package com.robotturtles.model;
+package com.robotturtles.model.card;
 
-public class ForwardMove implements IMove {
+import com.robotturtles.model.tile.Direction;
+import com.robotturtles.model.tile.Position;
+import com.robotturtles.model.tile.Turtle;
+
+public class Forward implements IMove {
     @Override
     public void execute(Turtle tile) {
         // Get the current position and direction of the tile

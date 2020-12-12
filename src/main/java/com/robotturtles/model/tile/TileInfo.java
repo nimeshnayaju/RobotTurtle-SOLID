@@ -1,4 +1,7 @@
-package com.robotturtles.model;
+package com.robotturtles.model.tile;
+
+import com.robotturtles.model.tile.Direction;
+import com.robotturtles.model.tile.Position;
 
 public class TileInfo {
     private Position position;

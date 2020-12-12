@@ -1,4 +1,7 @@
-package com.robotturtles.model;
+package com.robotturtles.model.card;
+
+import com.robotturtles.model.tile.Direction;
+import com.robotturtles.model.tile.Turtle;
 
 public class LeftTurn implements IMove {
     @Override

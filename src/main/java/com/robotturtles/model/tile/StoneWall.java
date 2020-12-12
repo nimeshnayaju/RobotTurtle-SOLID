@@ -1,9 +1,9 @@
-package com.robotturtles.model;
+package com.robotturtles.model.tile;
 
-public class IceWall implements Movable {
+public class StoneWall implements Placeable {
     private Position position;
 
-    public IceWall(Position position) {
+    public StoneWall(Position position){
         this.position = position;
     }
 

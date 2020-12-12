@@ -1,4 +1,7 @@
-package com.robotturtles.model;
+package com.robotturtles.model.card;
+
+import com.robotturtles.model.card.IShoot;
+import com.robotturtles.model.tile.IceWall;
 
 public class Laser implements IShoot {
 

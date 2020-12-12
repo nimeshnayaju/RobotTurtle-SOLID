@@ -1,6 +1,6 @@
-package com.robotturtles.model;
+package com.robotturtles.model.tile;
 
-public class Portal implements Movable, Pairable {
+public class Portal implements Placeable, Pairable {
     private Position position;
     private Portal portalTwo;
 

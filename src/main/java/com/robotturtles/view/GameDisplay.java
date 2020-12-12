@@ -2,7 +2,8 @@ package com.robotturtles.view;
 
 import com.robotturtles.controller.DisplayFormat;
 import com.robotturtles.controller.ManipulateModel;
-import com.robotturtles.model.*;
+import com.robotturtles.model.game.Board;
+import com.robotturtles.model.tile.Direction;
 
 public class GameDisplay {
     private static final int ROW_INDEX = 0;

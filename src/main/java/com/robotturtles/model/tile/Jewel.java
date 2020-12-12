@@ -1,8 +1,8 @@
-package com.robotturtles.model;
+package com.robotturtles.model.tile;
 
 import java.util.Stack;
 
-public class Jewel implements Movable {
+public class Jewel implements Placeable {
 
     private Position position;
     private Stack<Position> positionsVisited;

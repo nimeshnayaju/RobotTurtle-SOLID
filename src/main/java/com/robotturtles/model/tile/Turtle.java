@@ -1,8 +1,8 @@
-package com.robotturtles.model;
+package com.robotturtles.model.tile;
 
 import java.util.Stack;
 
-public class Turtle implements Movable, Turnable, Undoable {
+public class Turtle implements Placeable, Turnable, Undoable {
     private Position position;
     private Direction direction;
     private Stack<Position> positionsVisited;

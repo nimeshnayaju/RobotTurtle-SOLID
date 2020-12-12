@@ -1,6 +1,7 @@
 package com.robotturtles.controller;
 
-import com.robotturtles.model.*;
+import com.robotturtles.model.card.*;
+import com.robotturtles.model.game.Game;
 
 public class LogicController {
     private static final int FORWARD_CARD = 1;
@@ -28,7 +29,7 @@ public class LogicController {
         Card card;
         switch (cardNumber) {
             case FORWARD_CARD:
-                card = new Card(new ForwardMove());
+                card = new Card(new Forward());
                 break;
             case LEFT_TURN_CARD:
                 card = new Card(new LeftTurn());
